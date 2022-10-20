@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PyScript Playground</title>
+
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+<link rel='stylesheet' href='css/main-template.css'>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lobster|Raleway'>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+  background-color: #eee;
+}
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(200px, auto);
+  grid-gap: 1em;
+  margin-top: 1em;
+}
+.container > div:first-child {
+  grid-row: 1/3;
+}
+.container > div {
+  background-color: #fff;
+  box-shadow: 0px 5px 10px #ccc;
+  padding: 10px;
+}
+</style>
+
+<py-config type='toml'>
+	packages = ['numpy', 'matplotlib']
+</py-config>
+</head>
+<body>
+
+<div class="container">
+<!--<div class='col-md'>-->
+<!--	<label>Piecewise</label>-->
+<!--	<input id='piecewise' type='range' min='1' max='20' step='1' value='1' class='w-48' oninput='this.nextElementSibling.value = this.value'>-->
+<!--	<output>1</output>-->
+<!--<canvas id="chart_piecewise" style="position:absolute; top:100px; left:0px; z-index:1; border:1px solid #000000;" width='10px' height='10px' ></canvas>-->
+<div>
+<py-script>
+import numpy as np
+from pyodide.ffi import create_proxy, to_js
+nb_max_iterations_line_search = 40
+alphas = 10.**np.linspace(0., -6., nb_max_iterations_line_search)
+def solve_SPG_nD(q0, fun, jac, constraint_fun=None, grad_constraint_fun=None, lmb=None, gamma=None, project=None, m=10, max_iter=100,
+		  tol=1e-6, tol_obj=1e-5, iterative=False, convergence_plot=None, verbose=0):
+	"""
+	Solves min_q fun(q) s.t. constraint_fun(q) = 0.
+	Parameters
+	----------
+	q0 : initial point
+	fun : objective function ( R^q -> R)
+	jac : gradient of the objective function ( R^q -> R^q)
+	constraint_fun : scalar constraint function ( R^q -> R^p)
+	grad_constraint_fun : gradient of the scalar constraint function ( R^q -> R^{q*p})
+	gamma : (optional, default=1.0) Initial spectral gradient step size
+	m : (optional, default=10) number of previous iterations to take into account in the nonmonotone line search
+	max_iter: maximum number of iterations
+	tol : tolerance threshold for the constraint function
+	verbose : True if you want to see results
+
+	Returns
+	-------
+	q_opt : result
+	"""
+	# lmb: Lagrange multiplier
+
+	gamma_min = 1e-10
+	gamma_max = 1e10
+
+	qk = q0.copy()
+	nb_dim = q0.shape[0]
+
+	cons_k = constraint_fun(qk)
+	grad_cons_k = grad_constraint_fun(qk)
+
+	# Linearize the constraint -> a.dot(qk) = b
+	a = grad_cons_k
+
+	b = a.dot(qk) - cons_k
+	aaT_inv = np.linalg.pinv(a.dot(a.T))
+	a_pinv = a.T.dot(aaT_inv)
+	a_null = np.eye(nb_dim) - a_pinv.dot(a)
+
+	fk = fun(qk)
+	dfk = jac(qk)
+
+	# Choose lambda and gamma, this strategy seems to be the best
+	lmb_max = 1e2
+	if lmb is None:
+		dfk_norm = np.linalg.norm(dfk, ord=2)
+		if dfk_norm == 0.:
+			lmb = np.ones(cons_k.shape[0]) * lmb_max
+		else:
+			lmb = np.linalg.norm(grad_cons_k, ord=2, axis=-1) / dfk_norm
+		lmb = np.clip(lmb, -lmb_max,lmb_max)
+
+	if gamma is None:
+		s_ = - gamma_min * dfk
+		dfk_ = jac(qk + s_)
+		y_ = dfk_ - dfk #+ (grad_constraint_fun(qk+s_) + grad_cons_k).T.dot(lmb)
+		sTy = s_.dot(y_)
+		if sTy > 0:
+			gamma = np.clip(s_.dot(s_)/sTy, gamma_min, gamma_max)
+		else:
+			gamma = 1.
+
+	cost = fk + cons_k.dot(lmb)
+	if verbose: print("Iteration {:>3}: | Objective: ".format(
+				0) + f"{fk:.3e}" + " | Max constraint: " + f"{np.max(cons_k):.3e}" +
+							  " | Max lmb: " + f"{np.max(lmb):.2e}"+" | Gamma: " + f"{gamma:.2e}")
+	cost_log = [cost]
+	if convergence_plot:
+		q_log = [qk]
+	# print(lmb)
+	for i in range(max_iter):
+
+		# Gradient step to find a direction
+		q0_ = qk - gamma * (dfk + a.T.dot(lmb))
+		if project:
+			a_pinv_b = a_pinv.dot(b)
+			p1 = lambda x:  a_pinv_b + a_null.dot(x)
+			if not type(project) == list:
+				qk_ = project_dykstra([p1, project], q0_, max_iter=10)
+			else:
+				qk_ = project_dykstra([p1]+ project, q0_, max_iter=10)
+			dk = qk_ - qk
+		else:
+			dk = a_pinv.dot(b) + a_null.dot(q0_) - qk # search direction
+
+		# Check convergence: if the norm of the search direction is small, it converged
+		norm_dk = np.linalg.norm(dk)
+		if norm_dk < 1e-8 and i>0:
+			if verbose: print("[Search direction] Converged at iteration", i, "with a constraint value of",
+							  "{:2e}".format(np.max(cons_k_)), "and objective value of", "{:2e}".format(fk))
+			break
+
+		# Line search
+		ls_success = False
+		tmp = (dfk + grad_cons_k.T.dot(lmb)).dot(dk)
+		for alpha in alphas:
+			qk_  = qk  + alpha * dk
+			cons_k_ = constraint_fun(qk_)
+			fk_ = fun(qk_)
+			g_ = fk_ + np.abs(cons_k_).dot(lmb)
+			if g_ < np.max(cost_log[-m:]) + 1e-4 * alpha * tmp :
+				ls_success = True
+				break
+
+		# Check if line search failed
+		# Still accept the step (later change it to accept only small changes in the objective in later iterations
+		# at the first iteration, it is okay if line search fails, just take one step with alpha=1)
+		if not ls_success:
+			if verbose: print("Failed")
+			alpha = 1e0
+			qk_ = qk + alpha * dk
+			cons_k_ = constraint_fun(qk_)
+			fk_ = fun(qk_)
+			g_ = fk_ + np.abs(cons_k_).dot(lmb)
+
+		# Check convergence
+		if np.abs(g_ - cost) < tol_obj and np.max(cons_k_) <= tol:
+			if verbose: print("[Tolerance] Converged at iteration", i, "with a constraint value of",
+							  "{:2e}".format(np.max(cons_k_)), "and objective value of",
+							  "{:2e}".format(fk))
+			break
+		# if not converged yet:
+		else:
+			cost = g_.copy()
+			cost_log += [cost]
+
+			qk_prev = qk.copy()
+			qk = qk_.copy()
+			if convergence_plot:
+				q_log += [qk]
+			sk = qk - qk_prev
+
+			cons_k = cons_k_
+			grad_cons_k_prev = a.copy()
+			grad_cons_k = grad_constraint_fun(qk)
+
+			fk = fk_.copy()
+
+			dfk_prev = dfk.copy()
+			dfk = jac(qk)
+
+			# Linearize the constraint -> a.dot(qk) = b
+			a = grad_cons_k
+			b = a.dot(qk) - cons_k
+			aaT_inv = np.linalg.pinv(a.dot(a.T))
+
+			a_pinv = a.T.dot(aaT_inv)
+			a_null = np.eye(nb_dim) - a_pinv.dot(a)
+
+			# # Find the Lagrange multiplier
+
+			lmb = aaT_inv.dot(cons_k * gamma * alpha- a.dot(dfk))
+			# lmb = aaT_inv.dot(cons_k - a.dot(dfk)*alpha*gamma)/(alpha*gamma)
+
+			# dl = aaT_inv.dot(a.dot(-gamma*dfk) + b)
+			# lmb = lmb + alpha * dl
+
+			# Find the spectral step size
+			yk = dfk - dfk_prev + (grad_cons_k - grad_cons_k_prev).T.dot(lmb)
+			skTyk = sk.dot(yk)
+			if skTyk <= 0:
+				gamma =  gamma
+				# gamma = 1e-2
+			else:
+				spectral_param = sk.dot(sk) / skTyk
+				gamma = np.clip(spectral_param, gamma_min, gamma_max)
+
+			if verbose: print("Iteration {:>3}: | Objective: ".format(
+				i+1) + f"{fk:.3e}" + " | Max constraint: " + f"{np.max(cons_k_):.3e}" +
+							  " | Max lmb: " + f"{np.max(lmb):.2e}"+" | Gamma: " + f"{gamma:.2e}")
+			# if verbose: print("Iteration", i, " ", "{:2e}".format(np.max(cons_k_)), '{:2e}'.format(fk), np.max(lmb), gamma)
+	if iterative:
+		return qk, lmb
+	else:
+		if convergence_plot:
+			return qk,np.stack(q_log)
+		else:
+			return qk
+</py-script>
+
+<py-repl>
+K = 100
+def objective_function(x):
+	# Rosenbrock function
+	x1 = x[0]
+	x2 = x[1]
+	return K*(x2-x1**2)**2 + (1-x1)**2
+def gradient_objective_function(x):
+	x1 = x[0]
+	x2 = x[1]
+	df1 = -K*4*x1*(x2-x1**2) - 2*(1-x1)
+	df2 = K*2*(x2-x1**2)
+	return np.array([df1, df2])
+</py-repl>
+</div>
+
+<div>
+<py-repl>
+def constraint_fun(x):
+    x1 = x[0]
+    x2 = x[1]
+    con = x1**2 + x2**2 - 2
+    return np.array([(con > 0.)*con])
+
+def grad_constraint_fun(x):
+    x1 = x[0]
+    x2 = x[1]
+    con = x1**2 + x2**2 - 2
+    dcon = np.array([2*x1, 2*x2])*(con > 0.)
+    return dcon[None]
+</py-repl>
+<py-repl>
+x0 = np.array([-1., -1.])
+</py-repl>
+<button id="solve-button">Solve</button>
+<p id="solution"> Solution </p>
+<p id="objective"> Objective </p>
+<p id="constraint"> Constraint norm </p>
+
+<py-script>
+import numpy as np
+from js import document
+from pyodide.ffi import create_proxy, to_js
+
+sol_log = document.querySelector('#solution')
+obj_log = document.querySelector('#objective')
+con_log = document.querySelector('#constraint')
+
+
+def on_add_click(e):
+	x = solve_SPG_nD(x0, objective_function, gradient_objective_function,
+	constraint_fun, grad_constraint_fun, m=5, tol_obj=1e-15, verbose=0)
+	sol_log.innerText = "Solution is: " + str(x)
+	obj_log.innerText = "Objective is: " + str(objective_function(x))
+	con_log.innerText = "Constraint norm is: " + str(np.linalg.norm(constraint_fun(x)))
+
+button = document.querySelector("#solve-button")
+button.addEventListener("click", create_proxy(on_add_click))
+
+</py-script>
+</div>
+</div>
+</body>
+</html>
