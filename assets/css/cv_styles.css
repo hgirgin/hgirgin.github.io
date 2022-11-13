@@ -1,0 +1,8 @@
+#about {
+  text-align: center;
+  padding: 40px;
+}
+
+.card .card-header {
+  cursor: pointer;
+}

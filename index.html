@@ -1,352 +1,155 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!doctype html>
+<html lang="en">
 <head>
     <title>Hakan Girgin</title>
     <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Responsive HTML5 Website landing Page for Developers">
-    <meta name="author" content="3rd Wave Media">
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-    <!-- Plugins CSS -->
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='description' content='Personal Website.'>
+    <meta name='author' content='Hakan Girgin'>
+
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
+    <link href='assets/css/styles.css' rel='stylesheet'>
     <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
     <!-- github acitivity css -->
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
+    <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css"> -->
     <link rel="stylesheet" href="http://caseyscarborough.github.io/github-activity/github-activity-0.1.0.min.css">
-
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
+  <body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Hakan Girgin</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Offcanvas</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="main.html">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link" href='cv.html'>CV</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href='publications.html'>Publications</a>
+                      </li>
 
-<body>
-    <!-- ******HEADER****** -->
-    <header class="header">
-        <div class="container">
-            <img class="profile-image img-responsive pull-left" src="assets/images/rsz_benprofil2.jpg" alt="James Lee" />
-            <div class="profile-content pull-left">
-                <h1 class="name">Hakan Girgin</h1>
-                <h2 class="desc">PhD Student at Idiap Research Institute and EPFL</h2>
-                <ul class="social list-inline">
-                    <li><a href="http://www.linkedin.com/in/hakan-girgin-b77701bb/"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="http://github.com/hgirgin"><i class="fa fa-github-alt"></i></a></li>
-                </ul>
-            </div><!--//profile-->
-            <a class="btn btn-cta-primary pull-right" href="http://hgirgin.github.io" target="_blank"><i class="fa fa-paper-plane"></i> Contact Me</a>
-        </div><!--//container-->
-    </header><!--//header-->
+                    <!-- <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Tutorials
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                          <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      </ul>
+                    </li> -->
 
-    <div class="container sections-wrapper">
+                     <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Software
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="spg.html">SPG</a></li>
+                        <li><a class="dropdown-item" href="#">AL-SPG</a></li>
+                        <!-- <li>
+                          <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                      </ul>
+                    </li>
+
+                  </ul>
+                  <!-- <form class="d-flex mt-3 mt-lg-0" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form> -->
+                </div>
+              </div>
+            </div>
+          </nav>
+      </header>
+
+
+      <div class="container" style="margin-top:30px">
+        <div class='row'>
+          <div class="d-flex justify-content-between">
+            <div class='col-sm-2  align-items-start'>
+              <!-- <img src="assets/images/rsz_benprofil2.jpg" alt="Hakan Girgin" /> -->
+              <img  height="280" width="200" src="assets/images/ben.jpg" alt="Hakan Girgin" />
+              <p class="text-center"> <i class="fa fa-envelope-o"></i>hakan.girgin@epfl.ch </p>
+
+            </div>
+
+            <div class='col-sm-10 ' >
+              <div class= 'bg-light border rounded-3 ' >
+                <p style="margin-left: 20px; margin-top: 10px"> I am a Ph.D. candidate in robotics at Ecole Polytechnique Fédérale de Lausanne
+                  (<a href="https://www.epfl.ch/" class="link-dark">EPFL</a>) and <a href="https://www.idiap.ch/" class="link-dark">Idiap</a> Research Institute supervised by
+                  <a href="https://calinon.ch/" class="link-dark">Dr. Sylvain Calinon</a>.I worked in EU-Horizon2020 projects
+                  <a href="https://collaborate-project.eu/" class="link-dark">CoLLaboratE</a> and 
+                  <a href="https://imagine-h2020.eu/" class="link-dark">IMAGINE</a>. 
+                  My research focuses on optimization and active iterative refinement of feedback and feedforward control policies for acquiring robust and anticipatory robot skills from demonstration.
+                  You can download my CV <a href="assets/CV.pdf" target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>here</a>.
+                </p>
+              </div>
+              <div class= 'mt-4'>
+                <h2 class="text-center">News</h2>
+                <div class="d-flex flex-column bd-highlight mb-3">
+                  <div class="icon-list p-2 bd-highlight">I presented our new paper "Robust Anticipatory Robot Skills with Memory" in ISRR 2022.</div>
+                  <div class="icon-list p-2 bd-highlight">New software for fast first-order constrained optimization based on spectral projected gradient descent method is online! </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class='container mt-4' style="text-align: center">
         <div class="row">
-            <div class="primary col-md-8 col-sm-12 col-xs-12">
-                <section class="about section">
-                    <div class="section-inner">
-                        <h2 class="heading">About Me</h2>
-                        <div class="content">
-                            <p> I am a PhD student at Idiap Research Institute and Ecole Polytechnique Fédérale de Lausanne (EPFL), in Robot Learning and Interaction Group supervised by Dr. Sylvain Calinon. I am working on H2020 CoLLaboratE
-                                (Co-production CeLL performing Human-Robot Collaborative AssEmbly) project since September 2018. Previously, I worked in H2020 IMAGINE
-                                project in CoLoRs Lab of Computer Engineering department of Bogazici University. </p>
+          <div class="col-sm-4">
+            <image class="bd-placeholder-img rounded-square" src="assets/images/projects/animation2.gif" height="200" width="200" preserveAspectRatio="xMidYMid slice" />
+            <h2 class="fw-normal">Optimization and control</h2>
+            <p>Fast replanning and adaptation strategies in feedback control and path optimization. </p>
+            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-sm-4">
+            <!-- <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg> -->
+            <image class="bd-placeholder-img rounded-square" src="assets/images/projects/uncertainties2.png" height="200" width="400" preserveAspectRatio="xMidYMid slice" />
 
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </section><!--//section-->
-<!-- 
-                <section class="about section">
-                    <div class="section-inner">
-                        <h2 class="heading">News</h2>
-                        <div class="content">
-                            <p>Started my PhD degree at EPFL and Idiap ! </p>
-                            <p>Our conference paper "Associative Skill Memory Models" is accepted to IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Madrid, 2018!</p>
-                            <p>Our conference paper "Parametric Dynamic Movement Primitives" is accepted to national Turkish conference, Türkiye Robotbilim Konferansı (ToRK), 2018!</p>
-                            <p>Got accepted for a 6-months internship in Idiap Research Institute in  Robot Learning &amp; Interaction Group of Dr. Sylvain Calinon !</p>
-                            <p>Our workshop paper "Towards Generalizable Associative Skill Memories" is accepted to ICRA2017 workshop on Learning and control for autonomous manipulation systems:
-the role of dimensionality reduction !  </p>
+            <h2 class="fw-normal">Active learning</h2>
+            <p>Iterative refinement of skills using information-density approaches in learning from demonstration.</p>
+            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+          <div class="col-sm-4">
+            <!-- <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg> -->
+            <image class="bd-placeholder-img rounded-square" src="assets/images/projects/lfd.gif" height="200" width="240" preserveAspectRatio="xMidYMid slice" />
 
-                        </div><!--//content
-                </section><!--//section
-                    </div><!--//section-inner
--->
-                
-                <section class="experience section">
-                    <div class="section-inner">
-                        <h2 class="heading">Publications</h2>
-                        <div class="content">
-                            <div class="item">
-								<h3 class="title">Journals</h3>
-                                <p>• J. Jankowski, H. Girgin, S. Calinon <strong>Probabilistic Adaptive Control for Robust Behavior Imitation.</strong>, IEEE Robotics and Automation Letters (RA-L), 6:2, pp. 1997-2004, 2021.
-								<a href="assets/images/pdfs/Jankowski_RAL2021.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<a href="https://ieeexplore.ieee.org/document/9361145"><i class='fa fa-link fa-fw'></i>link</a>  </p>
-                                <p>• T. Kulak, H. Girgin, J.-M. Odobez, S. Calinon <strong>Active Learning of Bayesian Probabilistic Movement Primitives.</strong>, IEEE Robotics and Automation Letters (RA-L), 6:2, 2163-2170, 2021.
-								<a href="assets/images/pdfs/Kulak-RAL2021.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<a href="https://ieeexplore.ieee.org/document/9357895"><i class='fa fa-link fa-fw'></i>link</a>  </p>
-								<p>• E. Ugur, H. Girgin, <strong>Compliant Parametric Dynamic Movement Primitives</strong>, Robotica, 38(3), pp. 457-474, 2020. 
-								<a href="https://www.cmpe.boun.edu.tr/~emre/papers/Ugur-2019-ROB.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<a href="https://www.youtube.com/watch?v=VACw5_DNQeU&feature=youtu.be"target='_blank'><i class='fa fa-play-circle fa-fw'></i>video</a>,
-								<a href="https://www.cambridge.org/core/journals/robotica/article/compliant-parametric-dynamic-movement-primitives/EE974B8B304F60961C9AB53A0A66BD6C"><i class='fa fa-link fa-fw'></i>link</a>  </p>
-                                <h3 class="title">Conferences</h3>
-                                <p>• H. Girgin, J. Jankowski, S. Calinon, <strong>Reactive Anticipatory Robot Skills with Memory.</strong>. International Symposium on Robotics Research (ISRR), 2022.
-								<a href="assets/images/pdfs/ISRR2022_Girgin.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-                                <p>• H. Girgin, T. Lembono, R. Cirligeanu, S. Calinon, <strong>Optimization of robot configurations for motion planning in industrial riveting.</strong>. In Proc. IEEE Intl Conf. on Advanced Robotics (ICAR), 2021.
-								<a href="assets/images/pdfs/ICAR2021_Girgin.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-                                <p>• E. Pignat, H. Girgin, S. Calinon, <strong>Generative Adversarial Training of Product of Policies for Robust and Adaptive Movement Primitives.</strong>. In Proc. Conference on Robot Learning (CoRL), 2020.
-								<a href="assets/images/pdfs/Pignat-CORL2020.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<p>• H. Girgin, E. Pignat, N. Jaquier, S. Calinon, <strong>Active Improvement of Control Policies with Bayesian Gaussian Mixture Model</strong>. In Proc. of IEEE/RSJ Intl Conf. on Intelligent Robots and Systems (IROS), 2020.
-								<a href="assets/images/pdfs/IROS2020_Girgin.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-                                <p>• H. Girgin, E. Ugur, <strong>Associative Skill Memory Models</strong>, IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), pp. 6043-6048, 2018.
-								<a href="https://www.cmpe.boun.edu.tr/~emre/papers/Girgin-2018-IROS.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<a href="https://www.youtube.com/watch?v=XAAzeip_skE&feature=youtu.be"target='_blank'><i class='fa fa-play-circle fa-fw'></i>video</a>,
-								<a href="https://ieeexplore.ieee.org/document/8593450"><i class='fa fa-link fa-fw'></i>link</a>  </p>
-								<h3 class="title">Workshops & Preprints</h3>
-                                <p>• H. Girgin, S. Calinon, <strong>Nullspace structure in model predictive control.</strong>. In ArXiv preprint, 2019.
-								<a href="assets/images/pdfs/Nullspace_Girgin.pdf"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-                                    <a href="https://arxiv.org/abs/1905.09679"><i class='fa fa-link fa-fw'></i>link</a>  </p>
+            <h2 class="fw-normal">Learning from demonstration</h2>
+            <p>Teaching generalizable skills executed in combination with feedback controllers. </p>
+            <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+          </div><!-- /.col-lg-4 -->
+        </div><!-- /.row -->
+      </div>
 
-                                <p>• H. Girgin, E. Ugur,<strong>Towards Generalizable Associative Skill Memories</strong>, ICRA 2017 Workshop on Learning and control for autonomous manipulation systems: the role of dimensionality reduction, Singapore, 2017.
-								<a href="https://pdfs.semanticscholar.org/552d/a25445f7e06677e6ab75219617dc84f50ebe.pdf?_ga=2.26758139.714448867.1594589235-2075339044.1573829575"target='_blank'><i class='fa fa-file-pdf-o fa-fw'></i>pdf</a>,
-								<a href="https://www.semanticscholar.org/paper/Towards-Generalizable-Associative-Skill-Memories-Girgin-Ugur/552da25445f7e06677e6ab75219617dc84f50ebe"><i class='fa fa-link fa-fw'></i>link</a>  </p>
-                            </div><!--//item-->
-
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </section><!--//section-->
-
-               <section class="latest section">
-                    <div class="section-inner">
-                        <h2 class="heading">Current Research</h2>
-                        <div class="content">
-
-                            <div class="item featured text-center">
-                                <h3 class="title"><a target="_blank">Active Learning of Control Policies</a></h3>
-                                <div class="featured-image">
-                                    <a>
-                                    <img class="img-responsive project-image" src="assets/images/projects/uncertainties.png" alt="project name" />
-                                    </a>
-                                   
-                                    </div> 
-                                <div class="desc text-left">
-                                    <p>
-Learning from demonstration (LfD) is an intuitive
-framework allowing non-expert users to easily (re-)program
-robots. However, the quality and quantity of demonstrations
-have a great influence on the generalization performances of
-LfD approaches. In this paper, we introduce a novel active
-learning framework in order to improve the generalization
-capabilities of control policies. The proposed approach is
-based on the epistemic uncertainties of Bayesian Gaussian
-mixture models (BGMMs). We determine the new query point
-location by optimizing a closed-form information-density cost
-based on the quadratic R´enyi entropy. Furthermore, to better
-represent uncertain regions and to avoid local optima problem,
-we propose to approximate the active learning cost with a
-Gaussian mixture model (GMM). We demonstrate our active
-learning framework in the context of a reaching task in a
-cluttered environment with an illustrative toy example and a
-real experiment with a Panda robot.</p>
-
-
-                            <hr class="divider" />
-<!--                        <div class="item row">
-                                <a class="col-md-4 col-sm-4 col-xs-12"  target="_blank">
-                                <img class="img-responsive project-image" src="assets/images/projects/rsz_1.jpg" alt="project name" />
-                                </a>
-                                <div class="desc col-md-8 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a  target="_blank">Inferring and Achieving Others Goals in Altruistic Robots</a></h3>
-                                    <p>Altruistic behavior of robots</p>
-                                    <p><a class="more-link" href="http://mertimre.github.io" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-                                </div><!--//desc
-                            </div><!--//item
--->
-
-
-
-
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </section><!--//section-->
-
-
-                
-                            
-                <section class="experience section">
-                    <div class="section-inner">
-                        <h2 class="heading">Research Experience</h2>
-                        <div class="content">
-                            <div class="item">
-                                <h3 class="title">Research Assistant - <span class="place"><a href="#">Bogazici University Cognitive Robotics and Learning Systems Group</a></span> <span class="year">(2016-present)</span></h3>
-                                <p>• Assistance to Asst. Prof. Emre Ugur in forming a new cognitive and developmental
-robotics research group in Bogazici University with a special emphasis on intelligent
-and adaptive manipulation.</p>
-                                <p>• Working in a European Union funded Horizon2020 project, IMAGINE (Robots Understanding
-Their Actions by Imagining Their Effects).</p>
-                            </div><!--//item-->
-
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </section><!--//section-->
-
-                <section class="experience section">
-                    <div class="section-inner">
-                        <h2 class="heading">Work Experience</h2>
-                        <div class="content">
-                            <div class="item">
-                                <h3 class="title">System Engineering Intern - <span class="place"><a href="#">ALTINAY Aerospace and Advanced Technologies</a></span> <span class="year">(07-08/2016)</span></h3>
-                                <p>• Training on Simscape and Simulink by modeling a 2DoF GPR arm and then controlling
-it by a PID controller to keep the end-effector at a desired height.</p>
-                                <p>• Modeling a continuous-track mobile robot on Simulink to measure the required torque
-on the wheel in order to move the robot at a desired speed and on a random road via
-a PID controller</p>
-                            </div><!--//item-->
-                            <div class="item">
-                                <h3 class="title">Product Definition Engineering Intern - <span class="place"><a href="#">General Electric Aviation</a></span> <span class="year">(07/2015-01/2016)</span></h3>
-                                <p>• Mastering in CAD programme Siemens NX (UG), a powerful tool of modelling/drawing
-parts and assemblies for which the parametric modeling method is applied. </p>
-                                <p>• Training about the components of a jet engine (HPC,HPT,LPT,combustor etc.) </p>
-                            </div><!--//item-->
-
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </section><!--//section-->
-
-
-
-            </div><!--//primary-->
-            <div class="secondary col-md-4 col-sm-12 col-xs-12">
-                 <aside class="info aside section">
-                    <div class="section-inner">
-                        <h2 class="heading sr-only">Basic Information</h2>
-                        <div class="content">
-                            <ul class="list-unstyled">
-                                <li><i class="fa fa-map-marker"></i><span class="sr-only">Location:</span>Istanbul, Turkey</li>
-                                <li><i class="fa fa-envelope-o"></i><span class="sr-only">Email:</span><a href="#">hakangirgin21@gmail.com</a></li>
-                                <li><i class="fa fa-link"></i><span class="sr-only">Website:</span><a href="#">https://hgirgin.github.io</a></li>
-                            </ul>
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </aside><!--//aside-->
-
-
-
-
-                <aside class="education aside section">
-                    <div class="section-inner">
-                        <h2 class="heading">Education</h2>
-                        <div class="content">
-                            <div class="item">
-                                <h3 class="title"><i class="fa fa-graduation-cap"></i> PhD Electrical Engineering</h3>
-                                <h4 class="university">Ecole Polytechnique Fédérale de Lausanne (EPFL) <span class="year">(2018- ...)</span></h4>
-                            </div><!--//item-->
-							<div class="item">
-                                <h3 class="title"><i class="fa fa-graduation-cap"></i> BSc Mechanical Engineering</h3>
-                                <h4 class="university">Bogazici University <span class="year">(2012-2017)</span></h4>
-                            </div><!--//item-->
-                            <div class="item">
-                                <h3 class="title"><i class="fa fa-graduation-cap"></i> BSc Mechanical Engineering</h3>
-                                <h4 class="university">Ecole Centrale Paris <span class="year">(2014-2015)</span></h4>
-                            </div><!--//item-->
-                            <div class="item">
-                                <h3 class="title"><i class="fa fa-graduation-cap"></i> High School Degree</h3>
-                                <h4 class="university">Lycée de Galatasaray <span class="year">(2007-2012)</span></h4>
-                            </div><!--//item-->
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </aside><!--//section-->
-
-                <aside class="skills aside section">
-                    <div class="section-inner">
-                        <h2 class="heading">Skills</h2>
-                        <div class="content">
-                            <p class="intro">
-
-                            <div class="skillset">
-
-                                <div class="item">
-                                    <h3 class="level-title">Python &amp; Matlab <span class="level-label" data-toggle="tooltip" data-placement="left" data-animation="true" title="You can use the tooltip to add more info...">Expert</span></h3>
-                                    <div class="level-bar">
-                                        <div class="level-bar-inner" data-level="90%">
-                                        </div>
-                                    </div><!--//level-bar-->
-                                </div><!--//item-->
-
-                                <div class="item">
-                                    <h3 class="level-title">ROS<span class="level-label">Expert</span></h3>
-                                    <div class="level-bar">
-                                        <div class="level-bar-inner" data-level="95%">
-                                        </div>
-                                    </div><!--//level-bar-->
-                                </div><!--//item-->
-
-                                <div class="item">
-                                    <h3 class="level-title">PyBullet <span class="level-label">Expert</span></h3>
-                                    <div class="level-bar">
-                                        <div class="level-bar-inner" data-level="96%">
-                                        </div>
-                                    </div><!--//level-bar-->
-                                </div><!--//item-->
-
-                                <!-- <p><a class="more-link" href="#"><i class="fa fa-external-link"></i> More on Coderwall</a></p> -->
-                            </div>
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </aside><!--//section-->
-
-                <aside class="languages aside section">
-                    <div class="section-inner">
-                        <h2 class="heading">Languages</h2>
-                        <div class="content">
-                            <ul class="list-unstyled">
-                                <li class="item">
-                                    <span class="title"><strong>Turkish:</strong></span>
-                                    <span class="level">Native Speaker <br class="visible-xs"/><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </span>
-                                </li><!--//item-->
-                                <li class="item">
-                                    <span class="title"><strong>English:</strong></span>
-                                    <span class="level">Professional Proficiency <br class="visible-sm visible-xs"/><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half"></i></span>
-                                </li><!--//item-->
-                                <li class="item">
-                                    <span class="title"><strong>French:</strong></span>
-                                    <span class="level">Professional Proficiency <br class="visible-sm visible-xs"/><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half"></i></span>
-                                </li><!--//item-->
-                                <li class="item">
-                                    <span class="title"><strong>Japanese:</strong></span>
-                                    <span class="level">Intermediate <br class="visible-sm visible-xs"/><i class="fa fa-star"></i> <i class="fa fa-star"></i> </span>
-                                </li><!--//item-->
-
-                            </ul>
-                        </div><!--//content-->
-                    </div><!--//section-inner-->
-                </aside><!--//section-->
-
-            </div><!--//secondary-->
-        </div><!--//row-->
-    </div><!--//masonry-->
-
-    <!-- ******FOOTER****** -->
-    <footer class="footer">
-        <div class="container text-center">
-                <!-- <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">3rd Wave Media</a> for developers</small> -->
-        </div><!--//container-->
-    </footer><!--//footer-->
-
-    <!-- Javascript -->
-    <script type="text/javascript" src="assets/plugins/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-rss/dist/jquery.rss.min.js"></script>
-    <!-- github activity plugin -->
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
-    <script type="text/javascript" src="http://caseyscarborough.github.io/github-activity/github-activity-0.1.0.min.js"></script>
-    <!-- custom js -->
-    <script type="text/javascript" src="assets/js/main.js"></script>
-</body>
+  </body>
 </html>
