@@ -124,10 +124,9 @@ function clearMsgs() {
 <div class='tab-pane fade show active' id='IK-tab-pane' role='tabpanel' aria-labelledby='IK-tab' tabindex='0'>
 <div onkeydown='clearMsgs()' onclick='clearMsgs()'>
 <py-repl std-out='repl-out' std-err='repl-err'>
-#x = np.array([-np.pi/4, np.pi/2, np.pi/4]) # Initial robot state
 param.radius=50.
-
 solver_reset()
+
 def inverse_kinematics(x):
 	def fun(qx):
 		# Cost is to stay as close as possible to the initial configuration
@@ -153,7 +152,6 @@ def inverse_kinematics(x):
 		J = Jkin(q, param)[:2]
 		return np.hstack([J, -np.eye(2)])
 		
-		
 	def project(qx):
 		# Projection functions for q and x
 
@@ -169,9 +167,7 @@ def inverse_kinematics(x):
 
 	result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
 	return result.x[:param.nbVarX]
-#qx = inverse_kinematics()
-#x = qx[:param.nbVarX]
-print(["Final Distance to the sphere:", np.linalg.norm(qx[param.nbVarX:]-param.Mu[:2])])
+
 </py-repl>
 </div>
 </div>
@@ -203,7 +199,6 @@ print(["Final Distance to the sphere:", np.linalg.norm(qx[param.nbVarX:]-param.M
 <p id='repl-out' style='font-size: 70%; color: #777777;'>(press shift+enter or click on the green run button to run the code; objects and joints can be moved with the mouse)</p>
 <p id='repl-err' style='font-size: 70%; color: #880000;'></p>
 
-<input id='object_angle' type='range' min='-3.14159' max='3.14159' step='0.0001' value='0' class='w-72' style='vertical-align:middle;'> <label>Object orientation</label> 
 
 </div> <!--sm-7-->
 
@@ -220,8 +215,8 @@ from pyodide.ffi import create_proxy
 from js import Path2D
 import numpy as np
 
-object_angle = document.getElementById('object_angle')  # Objects angle
-
+object_angle = lambda : None
+object_angle.value = 0.
 #########################################################################################
 base1_svg = Path2D.new('m -40.741975,77.319831 c -0.47247,-4.03869 7.32825,-20.1653 10.1171,-22.57617 4.71807,-4.07862 14.00201,-4.3722 15.87822,-6.89366 1.16821,-1.06725 1.19306,-2.45846 1.19136,-4.984461 -0.005,-6.836939 0.0375,-38.9164375 -0.0588,-42.62054746 C -13.757555,-5.2728275 -9.8130348,-13.34661 -0.02248483,-13.67734 7.5903552,-13.93451 13.741895,-7.1292375 13.608255,-0.84839739 13.474625,5.4324325 13.073715,50.200081 13.741895,54.075491 c 0.66817,3.8754 3.0736,26.72695 3.0736,26.72695 l -53.47684,-0.23624 c -3.68777,-0.0163 -4.0806,-3.24637 -4.0806,-3.24637 z')
 base2_svg = Path2D.new('m -13.653647,45.770986 27.119789,-0.07088')
