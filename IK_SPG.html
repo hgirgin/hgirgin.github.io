@@ -108,14 +108,14 @@ function clearMsgs() {
 
 <ul class='nav nav-tabs' id='myTab' role='tablist'>
 
-<li class='nav-item' role='presentation'><button class='nav-link active' id='IK-tab' data-bs-toggle='tab' data-bs-target='#IK-tab-pane' type='button' role='tab' aria-controls='IK-tab-pane' aria-selected='true'>IK</button>
+<li class='nav-item' role='presentation'><button class='nav-link active' id='IK-tab' data-bs-toggle='tab' data-bs-target='#IK-tab-pane' type='button' role='tab' aria-controls='IK-tab-pane' aria-selected='true'>IK-Circle</button>
 </li>
 
-<li class='nav-item' role='presentation'><button class='nav-link' id='dIK-tab' data-bs-toggle='tab' data-bs-target='#dIK-tab-pane' type='button' role='tab' aria-controls='dIK-tab-pane' aria-selected='false'>Damped IK</button></li>
+<li class='nav-item' role='presentation'><button class='nav-link' id='dIK-tab' data-bs-toggle='tab' data-bs-target='#dIK-tab-pane' type='button' role='tab' aria-controls='dIK-tab-pane' aria-selected='false'>IK-Square</button></li>
 
-<li class='nav-item' role='presentation'><button class='nav-link' id='wIK-tab' data-bs-toggle='tab' data-bs-target='#wIK-tab-pane' type='button' role='tab' aria-controls='wIK-tab-pane' aria-selected='false'>Weighted IK</button></li>
+<li class='nav-item' role='presentation'><button class='nav-link' id='wIK-tab' data-bs-toggle='tab' data-bs-target='#wIK-tab-pane' type='button' role='tab' aria-controls='wIK-tab-pane' aria-selected='false'>IK-Probabilistic</button></li>
 
-<li class='nav-item' role='presentation'><button class='nav-link' id='pIK-tab' data-bs-toggle='tab' data-bs-target='#pIK-tab-pane' type='button' role='tab' aria-controls='pIK-tab-pane' aria-selected='false'>Prioritized IK</button></li>
+<li class='nav-item' role='presentation'><button class='nav-link' id='pIK-tab' data-bs-toggle='tab' data-bs-target='#pIK-tab-pane' type='button' role='tab' aria-controls='pIK-tab-pane' aria-selected='false'>IK-ManipulabilityK</button></li>
 
 </ul>
 
@@ -158,7 +158,6 @@ def inverse_kinematics(x):
 		# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
 		q_projected = qx[:param.nbVarX]
 		# x_projected = qx[param.nbVarX:]
-		# x_projected = xd1
 		xd1 = param.Mu[:2]
 		x_projected = project_quadratic(qx[param.nbVarX:]-xd1, 0, 0.5*(param.radius**2))+xd1
 		return np.append(q_projected, x_projected) 
@@ -175,6 +174,53 @@ def inverse_kinematics(x):
 <div class='tab-pane fade' id='dIK-tab-pane' role='tabpanel' aria-labelledby='dIK-tab' tabindex='0'>
 <div onkeydown='clearMsgs()' onclick='clearMsgs()'>
 <py-repl std-out='repl-out' std-err='repl-err'>
+param.sz = [50, 30] # Size of object
+solver_reset()
+
+def inverse_kinematics(x):
+	def fun(qx):
+		# Cost is to stay as close as possible to the initial configuration
+		q = qx[:param.nbVarX]
+		err = q-x
+		return 0.5*(err).dot(err)
+
+	def grad_fun(qx):
+		# Gradient of the cost function
+		q = qx[:param.nbVarX]
+		err = q-x
+		return np.hstack([err, np.zeros(2)])
+
+	def constraint_fun(qx):
+		# Constraint is the forward kinematics
+		q = qx[:param.nbVarX]
+		p = qx[param.nbVarX:]
+		return fkin(q, param)[:2] - p
+
+	def grad_constraint_fun(qx):
+		# jacobian of the constraints
+		q = qx[:param.nbVarX]
+		J = Jkin(q, param)[:2]
+		return np.hstack([J, -np.eye(2)])
+		
+	def project(qx):
+		# Projection functions for q and x
+
+		# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
+		q_projected = qx[:param.nbVarX]
+		# x_projected = qx[param.nbVarX:]
+		# x_projected = xd1
+		xd1 = param.Mu[:2]
+
+		mode = "boundary" # "inside", "outside" or "boundary"
+		x_projected = project_square(qx[param.nbVarX:], center=param.Mu[:2],\
+		width=param.sz[0], height=param.sz[1], angle=0., mode=mode)
+
+		return np.append(q_projected, x_projected) 
+
+	qx0 = project(np.append(x, fkin(x, param)[:2])) # initialization
+
+	result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
+	return result.x[:param.nbVarX]
 </py-repl>
 </div>
 </div>
@@ -189,6 +235,52 @@ def inverse_kinematics(x):
 <div class='tab-pane fade' id='pIK-tab-pane' role='tabpanel' aria-labelledby='pIK-tab' tabindex='0'>
 <div onkeydown='clearMsgs()' onclick='clearMsgs()'>
 <py-repl std-out='repl-out' std-err='repl-err'>
+param.radius=0.
+solver_reset()
+
+def inverse_kinematics(x):
+	def fun(qxM):
+		# Cost is to stay as close as possible to the initial configuration
+		q = qxM[:param.nbVarX]
+		err = q-x
+		return 0.5*(err).dot(err)
+
+	def grad_fun(qxM):
+		# Gradient of the cost function
+		q = qxM[:param.nbVarX]
+		err = q-x
+		return np.hstack([err, np.zeros(2)])
+
+	def constraint_fun(qxM):
+		# Constraint is the forward kinematics
+		q = qxM[:param.nbVarX]
+		p = qxM[param.nbVarX:param.nbVarX+2]
+		M = qxM[-param.nbVarX*2:].reshape(param.nbVarX, para.nbVarX)
+		con1 = fkin(q, param)[:2] - p
+		con2 = M - 
+		
+
+	def grad_constraint_fun(qx):
+		# jacobian of the constraints
+		q = qx[:param.nbVarX]
+		J = Jkin(q, param)[:2]
+		return np.hstack([J, -np.eye(2)])
+		
+	def project(qx):
+		# Projection functions for q and x
+
+		# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
+		q_projected = qx[:param.nbVarX]
+		# x_projected = qx[param.nbVarX:]
+		# x_projected = xd1
+		xd1 = param.Mu[:2]
+		x_projected = project_quadratic(qx[param.nbVarX:]-xd1, 0, 0.5*(param.radius**2))+xd1
+		return np.append(q_projected, x_projected) 
+
+	qx0 = project(np.append(x, fkin(x, param)[:2])) # initialization
+
+	result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
+	return result.x[:param.nbVarX]
 
 </py-repl>
 </div>
@@ -205,6 +297,8 @@ def inverse_kinematics(x):
 <div class='col-sm-4'>
 <div class='sticky-sm-top'>
 <canvas id='canvas' style='width:100%;' width='900px' height='700px'></canvas>
+<input id='object_angle' type='range' min='-3.14159' max='3.14159' step='0.0001' value='0' class='w-72' style='vertical-align:middle;'> <label>Object orientation</label> 
+
 </div>
 </div> <!--sm-4-->
 
@@ -214,9 +308,8 @@ def inverse_kinematics(x):
 from pyodide.ffi import create_proxy
 from js import Path2D
 import numpy as np
+object_angle = document.getElementById('object_angle')  # Objects angle
 
-object_angle = lambda : None
-object_angle.value = 0.
 #########################################################################################
 base1_svg = Path2D.new('m -40.741975,77.319831 c -0.47247,-4.03869 7.32825,-20.1653 10.1171,-22.57617 4.71807,-4.07862 14.00201,-4.3722 15.87822,-6.89366 1.16821,-1.06725 1.19306,-2.45846 1.19136,-4.984461 -0.005,-6.836939 0.0375,-38.9164375 -0.0588,-42.62054746 C -13.757555,-5.2728275 -9.8130348,-13.34661 -0.02248483,-13.67734 7.5903552,-13.93451 13.741895,-7.1292375 13.608255,-0.84839739 13.474625,5.4324325 13.073715,50.200081 13.741895,54.075491 c 0.66817,3.8754 3.0736,26.72695 3.0736,26.72695 l -53.47684,-0.23624 c -3.68777,-0.0163 -4.0806,-3.24637 -4.0806,-3.24637 z')
 base2_svg = Path2D.new('m -13.653647,45.770986 27.119789,-0.07088')
@@ -595,8 +688,8 @@ while True:
 	# Rendering
 	clear_screen()
 	draw_ground()
-	#draw_obj(param, '#FF3399', '#DD1177')
-	draw_obj_circle(param, '#FF3399', '#DD1177')
+	draw_obj(param, '#FF3399', '#DD1177')
+	#draw_obj_circle(param, '#FF3399', '#DD1177')
 	draw_robot(x, '#CCCCCC', '#AAAAAA', '#222222', '#000000', True)
 	
 	# Object selection
@@ -865,6 +958,51 @@ def solve_SPG(x0, fun, grad_fun, project=None, m=5, gamma=None,max_iter=100, tol
 						z[cond3] = vec*np.sqrt(2*l)
 		
 				return z
+
+		def project_square(x, center, width, height, angle=0., mode="boundary"):
+				"""
+				Projects the vector x such that l <= ||x||_{\infty} <= u
+				This defines the region defined by between two square regions centered at center.
+				mode={"inside", "outside", "boundary"}
+				"""
+				xc = x-center
+				
+
+				R = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+
+				xy = np.array([width,height])
+				xy_ = width/xy
+				W = np.diag(xy_)
+				if mode == "boundary":
+					lower = width/2
+					upper = width/2
+				elif mode == "inside":
+					lower = 0.
+					upper = width/2
+				elif mode == "outside":
+					lower = width/2
+					upper = 1e5
+
+				
+
+				W_ = W@R.T
+				W_inv = np.linalg.inv(W_)
+
+				xc = W_ @ xc
+
+				j = np.argmax(np.abs(xc))
+				if np.abs(xc[j]) < lower:
+						xc[j] = lower*np.sign(xc[j])
+				return W_inv@np.maximum(np.minimum(xc, upper), -upper) + center
+		
+		def project_square_c(x, c, l, u):
+				"""
+				Projects the vector x such that l <= ||x-c||_{\infty} <= u
+				This defines the region defined by between two square regions centered at c.
+				"""
+				z = x - c
+				z_ = project_square(z, l, u)
+				return z_ + c
 		</py-script>
 
 <py-script>
