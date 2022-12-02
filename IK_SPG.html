@@ -213,7 +213,7 @@ def inverse_kinematics(x):
 
 		mode = "boundary" # "inside", "outside" or "boundary"
 		x_projected = project_square(qx[param.nbVarX:], center=param.Mu[:2],\
-		width=param.sz[0], height=param.sz[1], angle=0., mode=mode)
+		width=param.sz[0], height=param.sz[1], angle=param.Mu[-1], mode=mode)
 
 		return np.append(q_projected, x_projected) 
 
