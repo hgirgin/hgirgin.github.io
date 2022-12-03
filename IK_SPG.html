@@ -113,9 +113,11 @@ function clearMsgs() {
 
 <li class='nav-item' role='presentation'><button class='nav-link' id='dIK-tab' data-bs-toggle='tab' data-bs-target='#dIK-tab-pane' type='button' role='tab' aria-controls='dIK-tab-pane' aria-selected='false'>IK-Square</button></li>
 
-<li class='nav-item' role='presentation'><button class='nav-link' id='wIK-tab' data-bs-toggle='tab' data-bs-target='#wIK-tab-pane' type='button' role='tab' aria-controls='wIK-tab-pane' aria-selected='false'>IK-Probabilistic</button></li>
+<li class='nav-item' role='presentation'><button class='nav-link' id='wIK-tab' data-bs-toggle='tab' data-bs-target='#wIK-tab-pane' type='button' role='tab' aria-controls='wIK-tab-pane' aria-selected='false'>IK-Hyperplane</button></li>
 
-<li class='nav-item' role='presentation'><button class='nav-link' id='pIK-tab' data-bs-toggle='tab' data-bs-target='#pIK-tab-pane' type='button' role='tab' aria-controls='pIK-tab-pane' aria-selected='false'>IK-ManipulabilityK</button></li>
+<li class='nav-item' role='presentation'><button class='nav-link' id='pIK-tab' data-bs-toggle='tab' data-bs-target='#pIK-tab-pane' type='button' role='tab' aria-controls='pIK-tab-pane' aria-selected='false'>IK-Probabilistic</button></li>
+
+<!-- <li class='nav-item' role='presentation'><button class='nav-link' id='mIK-tab' data-bs-toggle='tab' data-bs-target='#mIK-tab-pane' type='button' role='tab' aria-controls='mIK-tab-pane' aria-selected='false'>IK-ManipulabilityK</button></li> -->
 
 </ul>
 
@@ -228,37 +230,26 @@ def inverse_kinematics(x):
 <div class='tab-pane fade' id='wIK-tab-pane' role='tabpanel' aria-labelledby='wIK-tab' tabindex='0'>
 <div onkeydown='clearMsgs()' onclick='clearMsgs()'>
 <py-repl std-out='repl-out' std-err='repl-err'>
-</py-repl>
-</div>
-</div>
-
-<div class='tab-pane fade' id='pIK-tab-pane' role='tabpanel' aria-labelledby='pIK-tab' tabindex='0'>
-<div onkeydown='clearMsgs()' onclick='clearMsgs()'>
-<py-repl std-out='repl-out' std-err='repl-err'>
-param.radius=0.
 solver_reset()
 
 def inverse_kinematics(x):
-	def fun(qxM):
+	def fun(qx):
 		# Cost is to stay as close as possible to the initial configuration
-		q = qxM[:param.nbVarX]
+		q = qx[:param.nbVarX]
 		err = q-x
 		return 0.5*(err).dot(err)
 
-	def grad_fun(qxM):
+	def grad_fun(qx):
 		# Gradient of the cost function
-		q = qxM[:param.nbVarX]
+		q = qx[:param.nbVarX]
 		err = q-x
 		return np.hstack([err, np.zeros(2)])
 
-	def constraint_fun(qxM):
+	def constraint_fun(qx):
 		# Constraint is the forward kinematics
-		q = qxM[:param.nbVarX]
-		p = qxM[param.nbVarX:param.nbVarX+2]
-		M = qxM[-param.nbVarX*2:].reshape(param.nbVarX, para.nbVarX)
-		con1 = fkin(q, param)[:2] - p
-		con2 = M - 
-		
+		q = qx[:param.nbVarX]
+		p = qx[param.nbVarX:]
+		return fkin(q, param)[:2] - p
 
 	def grad_constraint_fun(qx):
 		# jacobian of the constraints
@@ -272,15 +263,149 @@ def inverse_kinematics(x):
 		# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
 		q_projected = qx[:param.nbVarX]
 		# x_projected = qx[param.nbVarX:]
-		# x_projected = xd1
 		xd1 = param.Mu[:2]
-		x_projected = project_quadratic(qx[param.nbVarX:]-xd1, 0, 0.5*(param.radius**2))+xd1
+		x_projected = project_linear(qx[param.nbVarX:], a=np.array([np.tan(param.Mu[-1]), -1]),\
+		l=0, u=0)
 		return np.append(q_projected, x_projected) 
 
 	qx0 = project(np.append(x, fkin(x, param)[:2])) # initialization
 
 	result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
 	return result.x[:param.nbVarX]
+</py-repl>
+</div>
+</div>
+
+<div class='tab-pane fade' id='pIK-tab-pane' role='tabpanel' aria-labelledby='pIK-tab' tabindex='0'>
+	<div onkeydown='clearMsgs()' onclick='clearMsgs()'>
+	<py-repl std-out='repl-out' std-err='repl-err'>
+solver_reset()
+param.orientation_noise = 1
+solver_options.verbose = False
+param.success = np.zeros(100)
+param.iter = 0
+def inverse_kinematics(x):
+	param.iter += 1
+	param.iter = param.iter % 1000 
+	def fun(qx):
+		# Cost is to stay as close as possible to the initial configuration
+		q = qx[:param.nbVarX]
+		err = q-x
+		return 0.5*(err).dot(err)
+
+	def grad_fun(qx):
+		# Gradient of the cost function
+		q = qx[:param.nbVarX]
+		err = q-x
+		return np.hstack([err, np.zeros(2)])
+
+	def constraint_fun(qx):
+		# Constraint is the forward kinematics
+		q = qx[:param.nbVarX]
+		p = qx[param.nbVarX:]
+		return fkin(q, param)[:2] - p
+
+	def grad_constraint_fun(qx):
+		# jacobian of the constraints
+		q = qx[:param.nbVarX]
+		J = Jkin(q, param)[:2]
+		return np.hstack([J, -np.eye(2)])
+		
+	def project(qx):
+		# Projection functions for q and x
+
+		# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
+		q_projected = qx[:param.nbVarX]
+		# x_projected = qx[param.nbVarX:]
+		xd1 = param.Mu[:2]
+		A = np.eye(2)*1e-2
+		b = np.zeros(2)
+		c = -np.array([np.tan(param.Mu[-1]), -1])/0.84 # 0.99 probability
+		d = 0.
+		x_projected = project_soc_spg(qx[param.nbVarX:], A, b, c,d, max_iter=20)
+		return np.append(q_projected, x_projected) 
+	p = fkin(x, param)[:2]
+	qx0 = project(np.append(x, p )) # initialization
+	param.success[param.iter]=np.array([np.tan(param.Mu[-1]), -1]).dot(p)<=0
+	print(["Success rate:", np.sum(param.success)])
+	if not param.orientation_noise:
+		result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
+		return result.x[:param.nbVarX]
+	else:
+		return x
+		
+	</py-repl>
+	</div>
+	</div>
+
+
+<div class='tab-pane fade' id='mIK-tab-pane' role='tabpanel' aria-labelledby='mIK-tab' tabindex='0'>
+<div onkeydown='clearMsgs()' onclick='clearMsgs()'>
+<py-repl std-out='repl-out' std-err='repl-err'>
+	param.radius=5.
+	solver_reset()
+	solver_options.verbose=False
+	def inverse_kinematics(x):
+		def fun(qxM):
+			# Cost is to stay as close as possible to the initial configuration
+			q = qxM[:param.nbVarX]
+			err = q-x
+			return 0.5*(err).dot(err)
+	
+		def grad_fun(qxM):
+			# Gradient of the cost function
+			q = qxM[:param.nbVarX]
+			err = q-x
+			return np.hstack([err, np.zeros(2), np.zeros(4)])
+	
+		def manipulability_vec(q):
+			J = Jkin(q, param)[:2]
+			return (J.dot(J.T)).flatten()
+		def grad_manipulability_vec(q):
+			e = 1E-3
+			X = q[:,None] + np.eye(param.nbVarX) * e
+			F1 = manipulability_vec(q) # 4
+			F2 = np.stack([manipulability_vec(X[:,i]) for i in range(param.nbVarX)]).T # (4,3)
+			J = (F2 - F1[:,None]) / e
+			return J
+	
+			
+		def constraint_fun(qxM):
+			# Constraint is the forward kinematics
+			q = qxM[:param.nbVarX]
+			p = qxM[param.nbVarX:param.nbVarX+2]
+			M = qxM[-4:]
+			con1 = fkin(q, param)[:2] - p
+			con2 = M - manipulability_vec(q)
+			return np.append(con1, con2)
+			
+	
+		def grad_constraint_fun(qxM):
+			# jacobian of the constraints
+			q = qxM[:param.nbVarX]
+			J = Jkin(q, param)[:2]
+			grad = np.zeros((2+4, param.nbVarX+2+4))
+			grad[:2, :param.nbVarX] = J # dq
+			grad[:2, param.nbVarX:param.nbVarX+2] = -np.eye(2) # dx
+	
+			grad[2:, :param.nbVarX] = grad_manipulability_vec(q) #dq
+			grad[2:, -4:] = np.eye(4) # dM
+			return grad
+			
+		def project(qx):
+			# Projection functions for q and x
+	
+			# q_projected =  np.clip(qx[:param.nbVarX], lower_limits, upper_limits)
+			q_projected = qx[:param.nbVarX]
+			# x_projected = qx[param.nbVarX:]
+			# x_projected = xd1
+			xd1 = param.Mu[:2]
+			x_projected = project_quadratic(qx[param.nbVarX:param.nbVarX+2]-xd1, 0, 0.5*(param.radius**2))+xd1
+			return np.append(np.append(q_projected, x_projected), qx[-4:]) 
+		qx0 = project(np.append(np.append(x, fkin(x, param)[:2]), manipulability_vec(x))) # initialization  
+		result = solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project) 
+		print(x)
+		return result.x[:param.nbVarX]
 
 </py-repl>
 </div>
@@ -308,7 +433,10 @@ def inverse_kinematics(x):
 from pyodide.ffi import create_proxy
 from js import Path2D
 import numpy as np
+
 object_angle = document.getElementById('object_angle')  # Objects angle
+tab = document.querySelector('button[data-bs-toggle="tab"]')
+
 
 #########################################################################################
 base1_svg = Path2D.new('m -40.741975,77.319831 c -0.47247,-4.03869 7.32825,-20.1653 10.1171,-22.57617 4.71807,-4.07862 14.00201,-4.3722 15.87822,-6.89366 1.16821,-1.06725 1.19306,-2.45846 1.19136,-4.984461 -0.005,-6.836939 0.0375,-38.9164375 -0.0588,-42.62054746 C -13.757555,-5.2728275 -9.8130348,-13.34661 -0.02248483,-13.67734 7.5903552,-13.93451 13.741895,-7.1292375 13.608255,-0.84839739 13.474625,5.4324325 13.073715,50.200081 13.741895,54.075491 c 0.66817,3.8754 3.0736,26.72695 3.0736,26.72695 l -53.47684,-0.23624 c -3.68777,-0.0163 -4.0806,-3.24637 -4.0806,-3.24637 z')
@@ -394,6 +522,11 @@ param.l = [79, 96, 55] # Robot links lengths
 param.sz = [50, 30] # Size of objects
 param.Mu = [90, 0, 0] # Object position and orientation 
 param.radius = 50.
+param.success = np.zeros(100)
+param.iter = 0
+param.orientation_noise = False
+param.tab = None
+
 solver_options = lambda: None
 def solver_reset():
 	solver_options.rho = None
@@ -417,6 +550,13 @@ def solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun, project=None)
 	solver_options.lmb = result.lmb
 	return result
 
+tabEl = document.querySelectorAll('button[data-bs-toggle="tab"]')
+def tab_fun(event):
+	activated_pane = document.querySelector(event.target.getAttribute('data-bs-target'))
+	param.tab = activated_pane.id
+for tab in tabEl:
+	tab.addEventListener('shown.bs.tab', create_proxy(tab_fun))
+	
 
 
 
@@ -626,6 +766,7 @@ def draw_obj_circle(param, color, colortxt):
 		
 		ctx.translate(param.Mu[0], param.Mu[1])
 		ctx.rotate(param.Mu[2])
+
 		# Draw object
 		ctx.fillStyle = color
 		obj = Path2D.new()
@@ -643,6 +784,21 @@ def draw_obj_circle(param, color, colortxt):
 				ctx.font = '10px Permanent Marker'
 				ctx.fillStyle = colortxt
 				ctx.fillText('Move me!', 0, 0)
+def draw_line(param, color, colortxt):
+	global selected_obj, hover_obj
+	ctx.setTransform(scaling_factor, 0, 0, scaling_factor, canvas.width*0.5, canvas.height*0.5) # Reset transformation
+	ctx.beginPath()
+	
+	ctx.lineCap = 'round'
+	ctx.lineJoin = 'round'
+	ctx.lineWidth = '5'
+	ctx.strokeStyle = color
+	ctx.moveTo(-1000, -1000*np.tan(param.Mu[-1]))
+	ctx.lineTo(1000, 1000*np.tan(param.Mu[-1]))
+	ctx.stroke()
+	
+	
+
 
 #########################################################################################
  
@@ -688,8 +844,17 @@ while True:
 	# Rendering
 	clear_screen()
 	draw_ground()
-	draw_obj(param, '#FF3399', '#DD1177')
-	#draw_obj_circle(param, '#FF3399', '#DD1177')
+	if param.tab == 'IK-tab-pane':
+		draw_obj_circle(param, '#FF3399', '#DD1177')
+	elif param.tab == 'dIK-tab-pane':
+		draw_obj(param, '#FF3399', '#DD1177')
+	elif param.tab == 'wIK-tab-pane' or param.tab == 'pIK-tab-pane':
+		draw_line(param, '#FF3399', '#DD1177')
+	else:
+		draw_obj_circle(param, '#FF3399', '#DD1177')
+
+
+	
 	draw_robot(x, '#CCCCCC', '#AAAAAA', '#222222', '#000000', True)
 	
 	# Object selection
@@ -697,7 +862,7 @@ while True:
 		param.Mu[:2] = mouse
 		param.Mu[0] = max(min(param.Mu[0],225), -225)
 		param.Mu[1] = max(min(param.Mu[1],175), -175)
-	param.Mu[2] = (float)(object_angle.value)
+	param.Mu[2] = (float)(object_angle.value) + np.random.normal(scale=1e-2)*param.orientation_noise
 
 	await asyncio.sleep(0.0001)
 
@@ -1003,6 +1168,74 @@ def solve_SPG(x0, fun, grad_fun, project=None, m=5, gamma=None,max_iter=100, tol
 				z = x - c
 				z_ = project_square(z, l, u)
 				return z_ + c
+
+		def project_linear(x, a, l, u):
+			"""
+			Projects the vector x such that l<= a.T @ x <= u
+			"""
+			aTx = a.dot(x)
+			aTa = a.dot(a) + 1e-30
+			if aTx > u:
+					mu = aTx - u
+			elif aTx < l:
+					mu = aTx - l
+			else:
+					mu = 0.
+			return x - mu*a/aTa
+
+		def project_soc_unit(zt):
+			"""
+			Projects the vector z and t onto the second order cone (soc) such that ||z||<= t
+			"""
+			z = zt[...,:-1]
+			t = zt[...,-1]
+			if z.ndim == 2:
+				z_, t_ = project_soc_unit_batch(z=z, t=t)
+				return np.concatenate([z_, t_[:, None]], axis=1)
+		
+			else:
+				z_norm = np.linalg.norm(z)
+				if z_norm <= t:
+					z_, t_ = z,t
+				elif z_norm <= -t:
+					z_, t_ = z*0, t*0
+				else:
+					tmp = (z_norm + t)/2
+					z_, t_ = tmp*z/(z_norm+1e-30), tmp
+				return np.append(z_, t_)
+
+		def project_soc_spg(x0, A, b, c, d, max_iter=100, tol=1e-7, verbose=False):
+			"""
+			Projects x0 such that ||Ax-b|| <= cTx + d
+			"""
+			x_dim = x0.shape[0]
+			z_dim = A.shape[0] # also dim of b
+
+			r_side = np.append(b,d)
+			l_side = np.vstack([A, c[None]])
+
+			fun = lambda xzt: 0.5*(xzt[:x_dim]-x0).dot(xzt[:x_dim]-x0)
+			grad_fun = lambda xzt: np.append(xzt[:x_dim]-x0, np.zeros(z_dim+1))
+			def project_fun1(xzt):
+				# Projection on second order cone
+				return np.append(xzt[:x_dim], project_soc_unit(xzt[x_dim:]))
+
+			def constraint_fun(xzt):
+				x = xzt[:x_dim]
+				zt = xzt[x_dim:]
+				return zt - l_side.dot(x) - r_side 
+
+			def grad_constraint_fun(xzt):
+				grad = np.zeros((z_dim+1, x_dim+z_dim+1))
+				grad[:, :x_dim] = -l_side
+				grad[:, x_dim:] = np.eye(z_dim+1)
+				return grad
+
+
+			xzt0 = np.append(np.append(x0, A@x0 + b), c.dot(x0) + d)
+			xzt0 = project_fun1(xzt0)
+			return solve_AL_SPG(xzt0, fun, grad_fun, constraint_fun, grad_constraint_fun, rho=1e0,
+						project=project_fun1,tol=1e-6,tol_rel=tol, max_iter=max_iter, max_spg_iter=5,  m=5, verbose=verbose).x[:x_dim]
 		</py-script>
 
 <py-script>
