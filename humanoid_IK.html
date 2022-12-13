@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+<head>
+		<title>Hakan Girgin</title>
+		<!-- Meta -->
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+		<meta name='description' content='Personal Website.'>
+		<meta name='author' content='Hakan Girgin'>
+
+		<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
+	
+		<py-config type='toml'>
+		packages = ['numpy']
+		</py-config>
+
+						
+		<link rel='stylesheet' href='https://pyscript.net/latest/pyscript.css'> 
+		<script defer src='https://pyscript.net/latest/pyscript.js'></script>
+
+	
+		<!-- <link rel="stylesheet" href="https://pyscript.net/snapshots/2022.12.1.RC1/pyscript.css" /> -->
+    	<!-- <script defer src="https://pyscript.net/snapshots/2022.12.1.RC1/pyscript.js"></script> -->
+
+		<link href='assets/css/styles.css' rel='stylesheet'>
+		<!-- Plugins CSS -->
+		<link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
+
+		<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css' integrity='sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X' crossorigin='anonymous'>
+		<script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js' integrity='sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz' crossorigin='anonymous'></script>
+		<script defer src='https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js' integrity='sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05' crossorigin='anonymous'></script>
+		<script>
+		let macros = {
+			'\\tp': '\\text{\\tiny{#1}}',
+			'\\trsp' : '\\top',
+			'\\psin' : '\\dagger',
+			'\\eqref': '\\href{###1}{(\\text{#1})}',
+			'\\ref': '\\href{###1}{\\text{#1}}',
+			'\\label': '\\htmlId{#1}{}',
+			'\\nd': '\\bm{#1}',
+			'\\norm': '\\lVert #1 \\rVert',
+			'\\st':'\\text{s.t.}'
+		};
+		document.addEventListener('DOMContentLoaded', function() {
+			renderMathInElement(document.body, {
+				// customised options
+				trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+				macros: macros,
+				// • auto-render specific keys, e.g.:
+				delimiters: [
+					{left: '$$', right: '$$', display: true},
+					{left: '$', right: '$', display: false},
+					{left: '\\(', right: '\\)', display: false},
+					{left: '\\begin{equation}', right: '\\end{equation}', display: true},
+					{left: '\\begin{equation*}', right: '\\end{equation*}', display: true},
+					{left: '\\begin{align}', right: '\\end{align}', display: true},
+					{left: '\\begin{align*}', right: '\\end{align*}', display: true},
+					{left: '\\begin{alignat}', right: '\\end{alignat}', display: true},
+					{left: '\\begin{gather}', right: '\\end{gather}', display: true},
+					{left: '\\begin{CD}', right: '\\end{CD}', display: true},
+					{left: '\\[', right: '\\]', display: true}
+				],
+				// • rendering keys, e.g.:
+				throwOnError : false
+			});
+		});
+		</script>
+
+
+
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="#">Hakan Girgin</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+						<div class="offcanvas-header">
+							<h5 class="offcanvas-title" id="offcanvasNavbar2Label">Offcanvas</h5>
+							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+						</div>
+						<div class="offcanvas-body">
+							<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+								<li class="nav-item">
+									<a class="nav-link active" aria-current="page" href="index.html">Home</a>
+								</li>
+								<li class="nav-item">
+										<a class="nav-link" href='publications.html'>Publications</a>
+									</li>
+
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										Tutorials
+									</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href='slides.html'>Slides</a></li>
+										<li><a class="dropdown-item" href="#">Notes</a></li>
+									</ul>
+								</li>
+
+								 <li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										Software
+									</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="spg.html">SPG</a></li>
+										<li><a class="dropdown-item" href="IK_SPG.html">AL-SPG</a></li>
+										<!-- <li>
+											<hr class="dropdown-divider">
+										</li>
+										<li><a class="dropdown-item" href="#">Something else here</a></li> -->
+									</ul>
+								</li>
+
+							</ul>
+							<!-- <form class="d-flex mt-3 mt-lg-0" role="search">
+								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+								<button class="btn btn-outline-success" type="submit">Search</button>
+							</form> -->
+						</div>
+					</div>
+				</div>
+			</nav>
+	</header>
+
+<!-- <iframe enable-annotation></iframe> -->
+
+<div class='container-fluid'>
+
+
+<script>
+function clearMsgs() {
+  const el = document.getElementById('repl-err');
+  el.innerText = '';
+  //console.log('event!');
+}
+</script>
+
+<div class='row'>
+<div class='col-sm-1'></div>
+<div class='col-sm-7'>
+
+<br><br>
+
+<ul class='nav nav-tabs' id='myTab' role='tablist'>
+
+<li class='nav-item' role='presentation'><button class='nav-link active' id='IK1-tab' data-bs-toggle='tab' data-bs-target='#IK1-tab-pane' type='button' role='tab' aria-controls='IK1-tab-pane' aria-selected='true'>Coordinated IK</button></li>
+
+</ul>
+
+
+<div class='tab-content' id='myTabContent'>
+
+<div class='tab-pane fade show active' id='IK1-tab-pane' role='tabpanel' aria-labelledby='IK1-tab' tabindex='0'>
+<div onkeydown='clearMsgs()' onclick='clearMsgs()'>
+<py-repl std-out='repl-out' std-err='repl-err'>
+param.radius=50.
+solver_reset()
+
+def fun(qpc):
+	# Cost: ||q-q0||_2^2
+	q = qpc[:param.nbVarX]
+	return (q-q0).dot(q-q0)
+
+def grad_fun(qpc):
+	# Gradient of the cost: 2*(q-q0)
+	q = qpc[:param.nbVarX]
+	return np.hstack([2*(q-q0), np.zeros(2), np.zeros(2)])
+
+def constraint_fun(qpc):
+	# Constraint is the forward kinematics: f(q)-p=0
+	q,p,c = qpc[:param.nbVarX], qpc[param.nbVarX:param.nbVarX+2],qpc[param.nbVarX+2:]
+	con_CoM = fkin_CoM(q, param)-c
+	con_fkin = fkin(q, param)-p
+	return np.append(con_fkin, con_CoM)
+
+def grad_constraint_fun(qpc):
+	# Jacobian of the constraints
+	q = qpc[:param.nbVarX]
+	J = Jkin(q, param)
+	J_CoM = Jkin_CoM(q, param)	
+	grad = np.zeros((4, param.nbVarX+2+2))
+	grad[:2, :param.nbVarX] = J
+	grad[2:, :param.nbVarX] = J_CoM
+	grad[:2, param.nbVarX:param.nbVarX+2] = -np.eye(2)
+	grad[2:, -2:] = -np.eye(2)
+	return grad
+
+def project(qpc):
+
+	# Projection function for q
+	q_projected = np.clip(qpc[:param.nbVarX], -2*np.pi, 2*np.pi)
+
+	# Projection function for p
+	x_c = param.Mu[:2]
+	p_projected = project_quadratic(qpc[param.nbVarX:param.nbVarX+2]-x_c, 0, 0.5*(param.radius**2))+x_c
+
+	# Projection function for c
+	c_projected = qpc[-2:]    
+	c_projected[0] = param.Mu_CoM[0]
+
+	return np.append(np.append(q_projected, p_projected), c_projected) 
+
+def inverse_kinematics(q):
+	qpc0 = project(np.append(np.append(q, fkin(q, param)), fkin_CoM(q,param))) # initialization
+	result = solve(qpc0, fun, grad_fun, constraint_fun, grad_constraint_fun,project=project)  
+	return result.x[:param.nbVarX]
+</py-repl>
+</div>
+</div>
+
+
+</div> <!--tab-content-->
+
+<p id='repl-out' style='font-size: 70%; color: #777777;'>(press shift+enter or click on the green run button to run the code; objects and joints can be moved with the mouse)</p>
+<p id='repl-err' style='font-size: 70%; color: #880000;'></p>
+
+</div> <!--sm-7-->
+
+<div class='col-sm-4'>
+<div class='sticky-sm-top'>
+<canvas id='canvas' style='width:100%;' width='900px' height='1000px'></canvas>
+</div>
+</div> <!--sm-4-->
+
+</div> <!--row-->
+
+<py-script>
+from pyodide.ffi import create_proxy
+from js import Path2D, document
+import numpy as np
+import asyncio
+
+# Forward kinematics for end-effector (in robot coordinate system)
+def fkin(x, param):
+	L = np.tril(np.ones([param.nbVarX, param.nbVarX]))
+	f = [param.l @ np.cos(L @ x), param.l @ np.sin(L @ x)] 
+	return f
+	
+# Forward kinematics for all joints (in robot coordinate system)
+def fkin0(x, param): 
+	L = np.tril(np.ones([param.nbVarX, param.nbVarX]))
+	f = np.vstack([
+		L @ np.diag(param.l) @ np.cos(L @ x),
+		L @ np.diag(param.l) @ np.sin(L @ x)
+	])
+	f = np.hstack([np.zeros([2,1]), f])
+	return f
+
+# Jacobian with analytical computation (for single time step)
+def Jkin(x, param):
+	L = np.tril(np.ones([param.nbVarX, param.nbVarX]))
+	J = np.vstack([
+		-np.sin(L @ x).T @ np.diag(param.l) @ L,
+		 np.cos(L @ x).T @ np.diag(param.l) @ L
+	])
+	return J
+
+# Forward kinematics for center of mass (in robot coordinate system, with mass located at the joints)
+def fkin_CoM(x, param):
+	L = np.tril(np.ones([param.nbVarX, param.nbVarX]))
+	f = [param.l @ L @ np.cos(L @ x) / param.nbVarX, 
+	     param.l @ L @ np.sin(L @ x) / param.nbVarX] 
+	return f
+
+# Jacobian for center of mass (in robot coordinate system, with mass located at the joints)
+def Jkin_CoM(x, param):
+	L = np.tril(np.ones([param.nbVarX, param.nbVarX]))
+	J = np.vstack((-np.sin(L @ x).T @ L @ np.diag(param.l @ L) ,
+		            np.cos(L @ x).T @ L @ np.diag(param.l @ L))) / param.nbVarX
+	return J
+
+
+## Parameters
+# ===============================
+
+param = lambda: None # Lazy way to define an empty class in python
+param.dt = 1E-1 # Time step length
+param.nbVarX = 5 # State space dimension 
+param.l = [200, 200, 200, 200, 200] # Robot links lengths
+param.Mu_CoM = np.array([0, 300]) # desired position of the center of mass
+param.radius = 50.
+param.success = np.zeros(100)
+param.iter = 0
+param.orientation_noise = False
+param.tab = None
+param.Mu = [90, 300, 0] # Object position and orientation 
+
+
+param2 = lambda: None # Lazy way to define an empty class in python
+
+solver_options = lambda: None
+def solver_reset():
+	solver_options.rho = None
+	solver_options.lmb = None
+	solver_options.max_iter = 1
+	solver_options.max_spg_iter = 10
+	solver_options.tol = 1e-5
+	solver_options.tol_rel = 1e-5
+	solver_options.verbose = False
+
+solver_reset()
+
+def solve(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun, project=None):
+	result = solve_AL_SPG(qx0, fun, grad_fun, constraint_fun, grad_constraint_fun, project=project, \
+				rho=solver_options.rho, \
+				lmb=solver_options.lmb, \
+				max_iter=solver_options.max_iter, \
+				max_spg_iter=solver_options.max_spg_iter, \
+				tol=solver_options.tol, tol_rel=solver_options.tol_rel, verbose=solver_options.verbose, subverbose=0)
+	solver_options.rho = result.rho
+	solver_options.lmb = result.lmb
+	return result
+#########################################################################################
+
+# Mouse events
+mouse0 = np.zeros(2)
+mouse = np.zeros(2)
+mousedown = 0
+hover_joint = -1
+move_joint= -1
+hover0 = np.zeros(2)
+selected_obj = -1
+
+
+def onMouseMove(event):
+	global mouse, mouse0, hover0, x
+	offset = canvas.getBoundingClientRect()
+	mouse0[0] = (event.clientX - offset.x) * canvas.width / canvas.clientWidth
+	mouse0[1] = (event.clientY - offset.y) * canvas.height / canvas.clientHeight
+	mouse[0] = (mouse0[0] - canvas.width * 0.5) 
+	mouse[1] = -(mouse0[1] - canvas.height * 0.9) 
+		
+def onTouchMove(event):
+	global mouse, mouse0, hover0, x
+	offset = event.target.getBoundingClientRect()
+	mouse0[0] = (event.touches.item(0).clientX - offset.x) * canvas.width / canvas.clientWidth
+	mouse0[1] = (event.touches.item(0).clientY - offset.y) * canvas.height / canvas.clientHeight
+	mouse[0] = (mouse0[0] - canvas.width * 0.5) 
+	mouse[1] = -(mouse0[1] - canvas.height * 0.9)
+	
+def onMouseDown(event):
+	global mousedown, move_joint, hover0, param2
+	mousedown = 1
+	if hover_joint >= 0:
+		f0 = fkin0(x, param)
+		param2.l = np.append(param.l[:hover_joint], np.linalg.norm(f0[:,hover_joint] - mouse))
+		param2.nbVarX = hover_joint+1
+		move_joint = hover_joint
+
+def onMouseUp(event):
+	global mousedown, move_joint, selected_obj
+	mousedown = 0
+	move_joint = -1
+	selected_obj = -1
+
+
+def onWheel(event):
+	global x
+	if hover_joint >= 0:
+		x[hover_joint] -= 0.2 * (event.deltaY/106)
+
+document.addEventListener('mousemove', create_proxy(onMouseMove)) #for standard mouse
+document.addEventListener('touchmove', create_proxy(onTouchMove)) #for mobile interfaces
+
+document.addEventListener('mousedown', create_proxy(onMouseDown)) #for standard mouse
+document.addEventListener('touchstart', create_proxy(onMouseDown)) #for mobile interfaces 
+
+document.addEventListener('mouseup', create_proxy(onMouseUp)) #for standard mouse
+document.addEventListener('touchend', create_proxy(onMouseUp)) #for mobile interfaces 
+
+document.addEventListener('wheel', create_proxy(onWheel)) #for standard mouse
+
+
+#########################################################################################
+
+canvas = document.getElementById('canvas')
+ctx = canvas.getContext('2d')
+
+def clear_screen():
+	ctx.setTransform(1, 0, 0, 1, 0, 0)
+	ctx.fillStyle = 'white'
+	ctx.fillRect(0, 0, canvas.width, canvas.height)
+	ctx.setTransform(1, 0, 0, -1, canvas.width*0.5, canvas.height*0.9)
+
+
+def draw_robot(x, color):
+	global hover_joint
+	f = fkin0(x, param) # Update positions of the robot links
+	
+	# Draw ground
+	ctx.strokeStyle = color
+	ctx.lineWidth = '6'
+	ctx.beginPath()
+	ctx.moveTo(-350, -25)
+	ctx.lineTo(350, -25)
+	ctx.stroke()
+	
+	# Draw feet
+	ctx.translate(f[0,0], f[1,0])
+	ctx.lineWidth = '4'
+	ctx.strokeStyle = 'white'
+	ctx.fillStyle = color
+	ctx.beginPath()
+	ctx.arc(60, -25, 50, 0, np.pi/2)
+	ctx.lineTo(-27, 25)
+	ctx.lineTo(-27, -25)
+	ctx.fill()
+		
+	# Draw links and articulations
+	obj_articulation = Path2D.new()
+	obj_articulation.arc(0, 0, 12, 0, 2*np.pi)
+	ctx.lineCap = 'round'
+	ctx.lineJoin = 'round'
+	for i in range(param.nbVarX):
+		if i < param.nbVarX:
+			# Draw links outlines
+			ctx.lineWidth = '46'
+			ctx.strokeStyle = 'white'
+			ctx.beginPath()
+			ctx.lineTo(f[0,i], f[1,i])
+			ctx.lineTo(f[0,i+1], f[1,i+1])
+			ctx.stroke()
+			# Draw links
+			obj = Path2D.new()
+			obj.lineTo(f[0,i], f[1,i])
+			obj.lineTo(f[0,i+1], f[1,i+1])
+			ctx.lineWidth = '38'
+			ctx.strokeStyle = color
+			ctx.stroke(obj)
+			if ctx.isPointInStroke(obj, mouse0[0], mouse0[1]) and move_joint < 0:
+				hover_joint = i		
+		# Draw articulations
+		ctx.lineWidth = '4'
+		ctx.strokeStyle = 'white'
+		ctx.translate(f[0,i], f[1,i])
+		ctx.stroke(obj_articulation)
+		ctx.translate(-f[0,i], -f[1,i])
+	
+	#Draw head
+	param_tmp = lambda: None 
+	param_tmp.l = np.append(param.l[:2], param.l[2] * 1.4)
+	param_tmp.nbVarX = 3
+	f = fkin(x[:3], param_tmp) # Update positions of the robot links
+	obj = Path2D.new()
+	obj.arc(0, 0, 50, 0, 2*np.pi)
+	ctx.translate(f[0], f[1])
+	ctx.fill(obj)
+	ctx.translate(-f[0], -f[1])
+	
+	
+def draw_selected_point(f, color):
+	obj = Path2D.new()
+	obj.arc(0, 0, 6, 0, 2*np.pi)
+	ctx.translate(f[0], f[1])
+	ctx.fillStyle = color
+	ctx.fill(obj)
+	ctx.translate(-f[0], -f[1])
+
+
+def draw_CoM(f, color):
+	r = 16 # Radius
+	obj = Path2D.new()
+	obj.arc(0, 0, r, 0, np.pi/2)
+	obj.lineTo(0, 0);
+	obj.arc(0, 0, r, np.pi, 3*np.pi/2)
+	obj.lineTo(0, 0);
+	ctx.translate(f[0], f[1])
+	ctx.fillStyle = color
+	ctx.fill(obj)
+	#Draw contour
+	obj = Path2D.new()
+	ctx.strokeStyle = color
+	ctx.lineWidth = '4'
+	obj.arc(0, 0, r, 0, 2*np.pi)
+	ctx.stroke(obj)
+	ctx.translate(-f[0], -f[1])
+
+
+def draw_obj_circle(param, color, colortxt):
+	global selected_obj, hover_obj, mouse0, mousedown
+	
+	ctx.translate(param.Mu[0], param.Mu[1])
+	#ctx.rotate(param.Mu[2])
+
+	# Draw object
+	ctx.fillStyle = color
+	obj = Path2D.new()
+	obj.arc(0,0,param.radius,0,2*np.pi)
+	ctx.fill(obj)
+	if ctx.isPointInPath(obj, mouse0[0], mouse0[1]):
+			hover_obj = 0
+	if ctx.isPointInPath(obj, mouse0[0], mouse0[1]) and mousedown==1:
+			selected_obj = 0
+
+
+#########################################################################################
+ 
+def errorHandler(e):
+	msg = 'Error: ' + str(e)
+	console.error(msg)
+	el = document.getElementById('repl-err')
+	el.innerText = msg
+	
+def inverse_kinematics(x):
+	return x
+#########################################################################################
+a = .7
+x = np.array([np.pi/2-a, 2*a, -a, 3*np.pi/4, 3*np.pi/4]) # Initial robot state
+q0 = x.copy()
+
+u = np.zeros(param.nbVarX)
+count_reset = 0
+
+async def main():
+	global inverse_kinematics, hover_joint, hover_obj,x, param, selected_obj, param2, solver_options, hover_obj
+	global mouse
+	while True:
+		
+		try:
+			x = inverse_kinematics(x)
+		except Exception as e:
+			errorHandler(e)
+			def inverse_kinematics(x):
+				return x
+
+		if solver_options.rho is not None:
+			if solver_options.rho > 1e13:
+				solver_reset()
+
+		if (selected_obj >= 0) :
+			if count_reset == 0:
+				solver_reset()
+				count_reset = 1
+		else:
+			count_reset = 0
+				
+		# Reinit hovering variables
+		hover_joint = -1
+		
+		# Rendering
+		clear_screen()
+		#Draw CoM line
+		ctx.strokeStyle = '#FFAAAA'
+		ctx.lineWidth = '8'
+		ctx.beginPath()	
+		ctx.moveTo(param.Mu_CoM[0], 0)
+		ctx.lineTo(param.Mu_CoM[0], 500)
+		ctx.stroke()
+		#Draw CoM
+		draw_CoM(param.Mu_CoM, '#AA0000') # Target CoM
+		draw_robot(x, '#AAAAAA')
+		f_CoM = fkin_CoM(x, param) 
+		draw_CoM(f_CoM, '#777777') # Robot CoM
+		if move_joint >= 0:
+			f = fkin(x[:move_joint+1], param2)
+			draw_selected_point(f, '#777777')
+
+		draw_obj_circle(param, '#FF3399', '#DD1177')
+		# Object selection
+		if selected_obj==0:
+			param.Mu[:2] = mouse
+			#param.Mu[0] = max(min(param.Mu[0],225), -225)
+			#param.Mu[1] = max(min(param.Mu[1],175), -175)
+	
+
+		await asyncio.sleep(0.01)
+pyscript.run_until_complete(main())
+
+</py-script>
+<py-script>
+nb_max_iterations_line_search = 40
+alphas = 10.**np.linspace(0., -5., nb_max_iterations_line_search)
+
+def compute_gamma(s, y, gamma, gamma_min=1e-20, gamma_max=1e2, verbose=False):
+		sTy = s.dot(y)
+		if sTy > 0:
+				# mu = 1e-6
+				# spectral_param1 = s.dot(s) / sTy
+				# spectral_param2 = sTy/ y.dot(y)
+				# tmp = (s*y+ mu*gamma)/(s*s + mu)
+				# gamma = 1/tmp
+				# gamma[tmp < 1/spectral_param1] = spectral_param1
+				# gamma[tmp > 1/spectral_param2] = spectral_param2
+
+				spectral_param1 = s.dot(s) / sTy
+				spectral_param2 = sTy / y.dot(y)
+				if spectral_param1 < 2*spectral_param2:
+						spectral_param = spectral_param2
+				else:
+						spectral_param = spectral_param1-0.5*spectral_param2
+				gamma = np.clip(spectral_param, gamma_min, gamma_max)
+		else:
+				if verbose: print("PSD problem.")
+				gamma = gamma*10.
+				# gamma = 1.
+		return gamma
+
+def compute_gamma_init(dfk, xk=None, project=None, gamma_min=1e-20, gamma_max=1e2):
+		if project is None:
+				param = np.linalg.norm(dfk, ord=np.inf)
+		else:
+				param = np.linalg.norm(project(xk-dfk)-xk, ord=np.inf)
+		if param >= 1e-5:
+				gamma = np.clip(1./param, gamma_min, gamma_max)
+		else:
+				gamma = gamma_max
+		return gamma
+
+
+def solve_SPG(x0, fun, grad_fun, project=None, m=5, gamma=None,max_iter=100, tol=1e-5, tol_rel=1e-8, keep_gamma_constant=False, keep_log_iterations=False, verbose=0):
+		"""
+		Solves min_x fun(x) for x \in R^x_dim without constraints but with projections.
+		Parameters
+		----------
+		x0       : ndarray
+						Initial guess ( R^x )
+
+		fun      : Function
+						Objective function ( R^x --> R)
+
+		grad_fun : Function
+						Gradient of the objective function ( R^x --> R^x)
+
+		project  : Function
+						Projection function (R^x --> R^x)
+
+		m        : int
+						Number of previous iterations to check for nonmonotone line search 
+
+		gamma    : float (default=None)
+						Initial spectral step size, if None, computed with an heuristic.
+
+		max_iter : int
+						Maximum number of iterations
+
+		tol      : float
+						Tolerance threshold for the constraint function
+
+		keep_gamma_constant : bool (default=False)
+						Keep gamma=1 to reduce it to nonmonotone line search steepest gradient descent.
+
+		keep_log_iterations : bool (default=False)
+						Keeps a log of the decision variable at each iteration until convergence. 
+
+		verbose  : bool
+						True if you want to see results
+
+		Returns
+		-------
+		result object with the following attributes
+		result.x       : Final solution
+		result.fun     : Final objective cost
+		result.gamma   : Final gamma
+		result.nb_iter : Number of iterations achieved
+		result.x_log   : Log of the decision variable 
+		"""
+
+		max_line_search_iter = 20
+
+		xk = x0.copy()
+		if keep_log_iterations:
+				x_log = [xk]
+
+		fk = fun(xk)
+		dfk  = grad_fun(xk)
+		
+		# Choose lambda and gamma, this strategy seems to be the best
+		if gamma is None:
+				gamma = compute_gamma_init(dfk, xk, project, gamma_min=1e-3, gamma_max=1e3)
+		gamma_dfk = gamma*dfk
+
+		if verbose: print("Iteration {:>3}: | Objective: ".format(0) + f"{fk:.3e}"  + " | Gamma: " + f"{gamma:.2e}")
+		fk_log = [fk]
+
+		for i in range(max_iter):
+	
+				if project is not None:
+						x0_ = xk - gamma_dfk
+						if not type(project) == list:
+								dk = project(x0_) - xk
+						else:
+								xk_ = project_dykstra(project, x0_, max_iter=100)
+								dk = xk_ - xk
+				else:
+						dk = - gamma_dfk
+
+				# Check convergence: if the norm of the search direction is small, it converged
+				if np.linalg.norm(dfk) < tol and i!=0:
+						if verbose: print("[Search direction] Converged at iteration", i, "with an objective value of", "{:2e}".format(fk))
+						break
+
+				# Line search
+				f_max = np.max(fk_log[-m:]) 
+				xk_tentative = xk + dk
+				fk_tentative = fun(xk_tentative)
+				tmp = dfk.dot(dk)
+				alpha = 1.
+				count_ls_iter = 0
+				ls_success = True
+				while fk_tentative > f_max + 1e-4*alpha*tmp:
+						alpha_tmp = -0.5*(alpha**2)*tmp/(fk_tentative - fk - alpha*tmp)
+						if alpha_tmp >= 0.1 and alpha_tmp <= 0.9*alpha:
+								alpha = alpha_tmp
+						else:
+								alpha = 0.5*alpha
+						xk_tentative = xk + alpha*dk
+						fk_tentative = fun(xk_tentative)
+						count_ls_iter += 1
+						if count_ls_iter > max_line_search_iter:
+								ls_success = False
+								break
+				if not ls_success:
+						if verbose: print("Line search could not find a better solution")
+						if i == 0:
+								gamma = gamma*10
+								gamma_dfk = gamma*dfk
+								continue
+						else:
+								break
+
+				# print("h")
+						
+
+				# # Line search
+				# ls_success = False
+				# tmp = dfk.dot(dk)
+				# f_max = np.max(fk_log[-m:])
+				# for alpha in alphas:
+				#     xk_tentative  = xk + alpha * dk
+				#     fk_tentative = fun(xk_tentative)
+				#     if fk_tentative <= f_max + 1e-4 * alpha * tmp:
+				#         ls_success = True
+				#         print_success = "Success"
+				#         break
+
+				# # Check if line search failed
+				# if not ls_success:
+				#     # return xk, xk
+				#     print_success = "Fail"
+				#     if verbose: print(print_success)
+				#     gamma = gamma*10
+				#     gamma_dfk = gamma*dfk
+				#     continue
+
+				if np.abs(fk_tentative - fk) < tol_rel:
+						if verbose: print("[Relative objective reduction] Converged at iteration", i, "with an objective value of", "{:2e}".format(fk))
+						break
+
+				fk_log += [fk]
+
+				sk = xk_tentative - xk
+				xk = xk_tentative
+
+				fk = fk_tentative
+
+				if keep_log_iterations:
+						x_log += [xk]
+
+				yk = grad_fun(xk) - dfk
+				dfk = yk + dfk
+
+				gamma = compute_gamma(sk, yk, gamma, verbose=verbose)
+				if keep_gamma_constant:
+						gamma = 1.
+
+				gamma_dfk = gamma * dfk
+
+				if verbose: print("Iteration {:>3}: | Objective: ".format(
+						i+1) + f"{fk:.3e}" +" | Gamma: " + f"{np.max(gamma):.2e}", alpha)
+
+		result = lambda: None
+		result.x = xk
+		result.fun = fk
+		result.gamma = gamma
+		result.nb_iter = i
+		if keep_log_iterations:
+				result.log = np.stack(x_log)
+		return result
+</py-script>
+<py-script>
+		def project_quadratic(x,l,u):
+				"""
+				Projects the vector x such that l<= 0.5 * (x.T @ x) <= u
+				"""
+				if x.ndim == 2:
+						return project_quadratic_batch(x, l, u)
+				else:
+						# raise NotImplementedError
+						return project_quadratic_batch(x[None], l, u)[0]
+						# val = 0.5 * (x.T.dot(x))
+						#
+						# if val > u:
+						#     z =  x * np.sqrt(2 * u)/ np.linalg.norm(x)
+						#     zs = [z, -z]
+						#     return zs[np.argmin([np.linalg.norm(z-x), np.linalg.norm(-z-x)])]
+						# elif l > val:
+						#     z = x * np.sqrt(2 * l) / np.linalg.norm(x)
+						#     zs = [z, -z]
+						#     return zs[np.argmin([np.linalg.norm(z - x), np.linalg.norm(-z - x)])]
+						# else:
+						#     return  x
+		
+		def project_quadratic_batch(x,l,u):
+				"""
+				Batch version of project_quadratic, x is a matrix
+				"""
+				z = x.copy()
+				xTx = np.sum(x * x, axis=-1)
+				val = 0.5 * xTx
+				x_norm = np.sqrt(xTx)
+		
+				cond1 = np.where(np.logical_and(val > u, x_norm > 1e-5))
+				cond2 = np.where(np.logical_and(l > val, x_norm > 1e-5))
+				cond3 = np.where(x_norm <= 1e-5)
+		
+				z[cond1] = x[cond1] * np.sqrt(2 * u)/ x_norm[cond1][:,None]
+				z[cond2] = x[cond2] * np.sqrt(2 * l)/ x_norm[cond2][:,None]
+		
+				if len(cond3) > 0:
+						vec = np.random.randn(len(cond3), x.shape[-1])
+						vec = vec / np.linalg.norm(vec, axis=-1)[:,None]
+						z[cond3] = vec*np.sqrt(2*l)
+		
+				return z
+
+		def project_square(x, center, width, height, angle=0., mode="boundary"):
+				"""
+				Projects the vector x such that l <= ||x||_{\infty} <= u
+				This defines the region defined by between two square regions centered at center.
+				mode={"inside", "outside", "boundary"}
+				"""
+				xc = x-center
+				
+
+				R = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+
+				xy = np.array([width,height])
+				xy_ = width/xy
+				W = np.diag(xy_)
+				if mode == "boundary":
+					lower = width/2
+					upper = width/2
+				elif mode == "inside":
+					lower = 0.
+					upper = width/2
+				elif mode == "outside":
+					lower = width/2
+					upper = 1e5
+
+				
+
+				W_ = W@R.T
+				W_inv = np.linalg.inv(W_)
+
+				xc = W_ @ xc
+
+				j = np.argmax(np.abs(xc))
+				if np.abs(xc[j]) < lower:
+						xc[j] = lower*np.sign(xc[j])
+				return W_inv@np.maximum(np.minimum(xc, upper), -upper) + center
+		
+		def project_square_c(x, c, l, u):
+				"""
+				Projects the vector x such that l <= ||x-c||_{\infty} <= u
+				This defines the region defined by between two square regions centered at c.
+				"""
+				z = x - c
+				z_ = project_square(z, l, u)
+				return z_ + c
+
+		def project_linear(x, a, l, u):
+			"""
+			Projects the vector x such that l<= a.T @ x <= u
+			"""
+			aTx = a.dot(x)
+			aTa = a.dot(a) + 1e-30
+			if aTx > u:
+					mu = aTx - u
+			elif aTx < l:
+					mu = aTx - l
+			else:
+					mu = 0.
+			return x - mu*a/aTa
+
+		def project_soc_unit(zt):
+			"""
+			Projects the vector z and t onto the second order cone (soc) such that ||z||<= t
+			"""
+			z = zt[...,:-1]
+			t = zt[...,-1]
+			if z.ndim == 2:
+				z_, t_ = project_soc_unit_batch(z=z, t=t)
+				return np.concatenate([z_, t_[:, None]], axis=1)
+		
+			else:
+				z_norm = np.linalg.norm(z)
+				if z_norm <= t:
+					z_, t_ = z,t
+				elif z_norm <= -t:
+					z_, t_ = z*0, t*0
+				else:
+					tmp = (z_norm + t)/2
+					z_, t_ = tmp*z/(z_norm+1e-30), tmp
+				return np.append(z_, t_)
+
+		def project_soc_spg(x0, A, b, c, d, max_iter=100, tol=1e-7, verbose=False):
+			"""
+			Projects x0 such that ||Ax-b|| <= cTx + d
+			"""
+			x_dim = x0.shape[0]
+			z_dim = A.shape[0] # also dim of b
+
+			r_side = np.append(b,d)
+			l_side = np.vstack([A, c[None]])
+
+			fun = lambda xzt: 0.5*(xzt[:x_dim]-x0).dot(xzt[:x_dim]-x0)
+			grad_fun = lambda xzt: np.append(xzt[:x_dim]-x0, np.zeros(z_dim+1))
+			def project_fun1(xzt):
+				# Projection on second order cone
+				return np.append(xzt[:x_dim], project_soc_unit(xzt[x_dim:]))
+
+			def constraint_fun(xzt):
+				x = xzt[:x_dim]
+				zt = xzt[x_dim:]
+				return zt - l_side.dot(x) - r_side 
+
+			def grad_constraint_fun(xzt):
+				grad = np.zeros((z_dim+1, x_dim+z_dim+1))
+				grad[:, :x_dim] = -l_side
+				grad[:, x_dim:] = np.eye(z_dim+1)
+				return grad
+
+
+			xzt0 = np.append(np.append(x0, A@x0 + b), c.dot(x0) + d)
+			xzt0 = project_fun1(xzt0)
+			return solve_AL_SPG(xzt0, fun, grad_fun, constraint_fun, grad_constraint_fun, rho=1e0,
+						project=project_fun1,tol=1e-6,tol_rel=tol, max_iter=max_iter, max_spg_iter=5,  m=5, verbose=verbose).x[:x_dim]
+		</py-script>
+
+<py-script>
+def solve_AL_SPG(x0, fun, grad_fun, constraint_fun=None, grad_constraint_fun=None, project=None, m=5,
+								lmb=None, rho=None, max_spg_iter=10, keep_log_iterations=False, max_iter=100, tol=1e-3, tol_rel=1e-6,
+												verbose=0, subverbose=0):
+		"""
+		Solves min_q fun(q) s.t. constraint_fun(q) = 0 using augmented lagrangian combined with SPG.
+		Parameters
+		----------
+		x0 : initial point
+		fun : objective function ( R^q -> R)
+		grad_fun : gradient of the objective function ( R^q -> R^q)
+		constraint_fun : scalar constraint function ( R^q -> R)
+		grad_constraint_fun : gradient of the scalar constraint function ( R^q -> R^q)
+		gamma : (optional, default=1.0) Initial spectral gradient step size
+		m : (optional, default=10) number of previous iterations to take into account in the nonmonotone line search
+		max_iter: maximum number of iterations
+		tol : tolerance threshold for the constraint function
+		verbose : True if you want to see results
+
+		Returns
+		-------
+		q_opt : result
+		"""
+
+		xk = x0.copy()
+		objective_value = fun(xk)
+		constraint_value  = constraint_fun(xk)
+		lmb = np.zeros_like(constraint_value)
+		rho = np.clip(2*np.abs(objective_value)/constraint_value.dot(constraint_value), 1e-6, 10.) if rho is None else rho
+		if np.isnan(rho):
+					rho = 10
+		
+
+		cons_norm = np.linalg.norm(constraint_value, ord=np.inf)
+		gamma = None
+		if keep_log_iterations:
+				x_log = [xk]
+		if verbose:  print("Iteration {:>3}: | Objective: ".format(
+								0) + f"{objective_value:.3e}" + " | Max constraint: " + f"{np.max(constraint_value):.3e}" +
+										" | Max lmb: " + f"{np.max(lmb):.2e}")
+		for i in range(max_iter):
+
+				def lagrangian(x):
+						cons = constraint_fun(x)
+						return fun(x) + lmb.dot(cons) + 0.5 * rho * cons.dot(cons)
+
+				def grad_lagrangian(x):
+						grad_cons = grad_constraint_fun(x)
+						cons = constraint_fun(x)
+						return grad_fun(x) + grad_cons.T.dot(lmb)  + rho * grad_cons.T.dot(cons)
+
+				res = solve_SPG(xk, lagrangian, grad_lagrangian, m=m, project=project, max_iter=max_spg_iter , tol=1e-6, tol_rel=1e-8, verbose=subverbose)
+				xk = res.x
+
+				if keep_log_iterations:
+						x_log += [xk]
+
+				objective_value_prev = np.copy(objective_value) if i != 0 else 1e5
+				objective_value = fun(xk)
+				constraint_value = constraint_fun(xk)
+				lagrangian_value = objective_value + lmb.dot(constraint_value) + 0.5*rho*constraint_value.dot(constraint_value)
+
+				prev_cons_norm = np.copy(cons_norm)
+				cons_norm = np.linalg.norm(constraint_value, ord=np.inf)
+
+				if cons_norm< tol and np.abs(objective_value - objective_value_prev) < tol_rel:
+						if verbose: print("Converged at iteration {:>3}: | Objective: ".format(
+								i+1) + f"{objective_value:.3e}" + " | Max constraint: " + f"{np.max(constraint_value):.3e}" +
+																" | Max lmb: " + f"{np.max(lmb):.2e}" + " | Lagrangian: " + f"{lagrangian_value:.2e}" )
+						break
+				
+				lmb += rho * constraint_value
+				lmb = np.clip(lmb,-1e10, 1e10)
+
+				if cons_norm > 0.1*prev_cons_norm:
+						rho = np.clip(5 * rho, -1, 1e15)
+
+				if verbose: print("Iteration {:>3}: | Objective: ".format(
+								i+1) + f"{objective_value:.3e}" + " | Max constraint: " + f"{np.max(constraint_value):.3e}" +
+															" | Max lmb: " + f"{np.max(lmb):.2e}" + " | Lagrangian: " + f"{lagrangian_value:.2e}" +
+													" | Rho: " + f"{rho:.2e}" )
+
+
+		result = lambda: None
+		result.x = xk
+		result.fun = objective_value
+		result.constraint_fun = constraint_value
+		result.gamma = res.gamma
+		result.rho = rho
+		result.lmb = lmb
+		result.nb_iter = i
+		if keep_log_iterations:
+				result.log = np.stack(x_log)
+		return result
+</py-script>
+
+</div> <!--container-->
+</body>
+</html>
+
