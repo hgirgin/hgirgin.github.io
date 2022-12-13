@@ -147,7 +147,6 @@
 function clearMsgs() {
 	const el = document.getElementById('repl-err');
 	el.innerText = '';
-	//console.log('event!');
 }
 </script>
 
@@ -540,8 +539,10 @@ def inverse_kinematics(x):
 </div> <!--row-->
 
 <py-script>
+import asyncio
 from pyodide.ffi import create_proxy
 from js import Path2D
+from js import document
 import numpy as np
 
 object_angle = document.getElementById('object_angle')  # Objects angle
@@ -645,7 +646,7 @@ def solver_reset():
 	solver_options.max_spg_iter = 10
 	solver_options.tol = 1e-5
 	solver_options.tol_rel = 1e-5
-	solver_options.verbose = True
+	solver_options.verbose = False
 
 solver_reset()
 
@@ -914,9 +915,9 @@ def draw_line(param, color, colortxt):
  
 def errorHandler(e):
 	msg = 'Error: ' + str(e)
-	console.error(msg)
+	#console.error(msg)
 	el = document.getElementById('repl-err')
-	el.innerText = msg
+	el.innerText =  msg
 	#el.textContent = msg
 	
 def inverse_kinematics(x):
@@ -926,59 +927,62 @@ x = np.array([-np.pi/4, np.pi/2, np.pi/4]) # Initial robot state
 q0 = x.copy()
 u = np.zeros(param.nbVarX)
 count_reset = 0
-while True:
-	try:
-		x = inverse_kinematics(x)
-	except Exception as e:
-		errorHandler(e)
-		def inverse_kinematics(x):
-			return x
-	if solver_options.rho is not None:
-		if solver_options.rho > 1e13:
-			solver_reset()
+</py-script>
+<py-script>
+async def main():
+	global inverse_kinematics, hover_joint, hover_obj,x, param
+	while True:
+		try:
+			x = inverse_kinematics(x)
+		except Exception as e:
+			errorHandler(e)
+			def inverse_kinematics(x):
+				return x
+		if solver_options.rho is not None:
+			if solver_options.rho > 1e13:
+				solver_reset()
 
-	if (selected_obj >= 0) :
-		if count_reset == 0:
-			solver_reset()
-			count_reset = 1
-	else:
-		count_reset = 0
-
-
-	# Reinit hovering variables
-	hover_joint = -1
-	hover_obj = -1 
-	
+		if (selected_obj >= 0) :
+			if count_reset == 0:
+				solver_reset()
+				count_reset = 1
+		else:
+			count_reset = 0
 
 
-	f = fkin(x, param)
-	# Rendering
-	clear_screen()
-	draw_ground()
-	if param.tab == 'IK-tab-pane':
-		draw_obj_circle(param, '#FF3399', '#DD1177')
-	elif param.tab == 'dIK-tab-pane':
-		draw_obj(param, '#FF3399', '#DD1177')
-	elif param.tab == 'wIK-tab-pane' or param.tab == 'pIK-tab-pane':
-		draw_line(param, '#FF3399', '#DD1177')
-	else:
-		draw_obj_circle(param, '#FF3399', '#DD1177')
+		# Reinit hovering variables
+		hover_joint = -1
+		hover_obj = -1 
+		
+		f = fkin(x, param)
+		# Rendering
+		clear_screen()
+		draw_ground()
+		if param.tab == 'IK-tab-pane':
+			draw_obj_circle(param, '#FF3399', '#DD1177')
+		elif param.tab == 'dIK-tab-pane':
+			draw_obj(param, '#FF3399', '#DD1177')
+		elif param.tab == 'wIK-tab-pane' or param.tab == 'pIK-tab-pane':
+			draw_line(param, '#FF3399', '#DD1177')
+		else:
+			draw_obj_circle(param, '#FF3399', '#DD1177')
 
 
-	#q0 = x.copy()
-	draw_robot(q0, '#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB', False) # x0
-	draw_robot(x, '#CCCCCC', '#AAAAAA', '#222222', '#000000', True)
+		#q0 = x.copy()
+		draw_robot(q0, '#EEEEEE', '#DDDDDD', '#CCCCCC', '#BBBBBB', False) # x0
+		draw_robot(x, '#CCCCCC', '#AAAAAA', '#222222', '#000000', True)
 
-	
-	# Object selection
-	if selected_obj==0:
-		param.Mu[:2] = mouse
-		param.Mu[0] = max(min(param.Mu[0],225), -225)
-		param.Mu[1] = max(min(param.Mu[1],175), -175)
-	param.Mu[2] = (float)(object_angle.value) + np.random.normal(scale=1e-2)*param.orientation_noise
+		
+		# Object selection
+		if selected_obj==0:
+			param.Mu[:2] = mouse
+			param.Mu[0] = max(min(param.Mu[0],225), -225)
+			param.Mu[1] = max(min(param.Mu[1],175), -175)
+		param.Mu[2] = (float)(object_angle.value) + np.random.normal(scale=1e-2)*param.orientation_noise
 
-	await asyncio.sleep(0.0001)
-
+		await asyncio.sleep(0.0001)
+#asyncio.ensure_future(main())
+pyscript.run_until_complete(main())
 </py-script>
 
 <py-script>
@@ -1390,7 +1394,7 @@ def solve_AL_SPG(x0, fun, grad_fun, constraint_fun=None, grad_constraint_fun=Non
 				x_log = [xk]
 		if verbose:  print("Iteration {:>3}: | Objective: ".format(
 								0) + f"{objective_value:.3e}" + " | Max constraint: " + f"{np.max(constraint_value):.3e}" +
-															" | Max lmb: " + f"{np.max(lmb):.2e}")
+										" | Max lmb: " + f"{np.max(lmb):.2e}")
 		for i in range(max_iter):
 
 				def lagrangian(x):
